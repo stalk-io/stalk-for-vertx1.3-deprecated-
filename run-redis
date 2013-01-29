@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec ./bin/redis/src/redis-server "$1"
