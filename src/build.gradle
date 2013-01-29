@@ -32,7 +32,7 @@ subprojects {
 	}
 }
 
-project(':sodabox-common'){
+project(':stalk-common'){
 	jar.enabled = true
 
 	dependencies {
@@ -44,7 +44,7 @@ project(':sodabox-common'){
 	}
 
 	task dist( type:Copy, dependsOn: 'jar' ) {
-		group = 'sodabox'
+		group = 'stalk'
 		description = "... ^^; "
 
 		into "../../bin/vertx/lib"
@@ -53,14 +53,14 @@ project(':sodabox-common'){
 	}
 }
 
-project(':sodabox-starter'){
+project(':stalk-starter'){
 	jar.enabled = true
 	
 	dependencies {
 	}
 
 	task dist( type:Copy, dependsOn: 'jar' ) {
-		group = 'sodabox'
+		group = 'stalk'
 		description = "... ^^; "
 
 		into "../../lib"
@@ -72,11 +72,11 @@ configure(subprojects.findAll {it.name.startsWith('mod-')}){
 	jar.enabled = false
 	
 	dependencies {
-		provided project(':sodabox-common')
+		provided project(':stalk-common')
 	}
 	
 	task dist( type:Copy, dependsOn: 'classes' ) {
-		group = 'sodabox'
+		group = 'stalk'
 		description = "copy vertx module to /mods "
 
 		delete "../../mods/$modulename-v$version"

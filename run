@@ -2,7 +2,7 @@
 
 ##############################################################################
 ##
-##  SODABOX Server start up script for UN*X
+##  STALK.IO Server start up script for UN*X
 ##
 ##############################################################################
 
@@ -67,5 +67,5 @@ info ".
 ***********************************************
 ."
 
-echo "vertx run io.sodabox.starter.Main -conf $CONF_FILE -cp $APP_HOME/lib/* -instances 1"
-exec vertx run io.sodabox.starter.Main -conf "$CONF_FILE" -cp "$APP_HOME"/lib/* -instances 1
+echo "./bin/vertx/bin/vertx run io.stalk.starter.Main -conf $CONF_FILE -cp $APP_HOME/lib/* -instances 1"
+exec ./bin/vertx/bin/vertx run io.stalk.starter.Main -conf "$CONF_FILE" -cp "$APP_HOME"/lib/* -instances 1

@@ -1,5 +1,5 @@
 task installs {
-	group = 'sodabox'
+	group = 'stalk'
 	description = "install S/Ws"
 	
 	ant.delete(dir: 'temp')

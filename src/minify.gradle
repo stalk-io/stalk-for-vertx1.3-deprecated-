@@ -28,18 +28,18 @@ javascript.source {
 }
 
 task clean(type: Delete) {
-    delete "../webroot/sodabox-all.js"
-    delete "../webroot/sodabox-min.js"
+    delete "../webroot/stalk-all.js"
+    delete "../webroot/stalk-min.js"
 }
 
 // Combine JS files
 task combine(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
     source = javascript.source.custom.js.files
-    dest = "../webroot/sodabox-all.js"
+    dest = "../webroot/stalk-all.js"
 }
 
 // Minify with Google Closure Compiler
 minifyJs {
-    dest = "../webroot/sodabox-min.js"
+    dest = "../webroot/stalk-min.js"
     source = javascript.source.custom.js.files
 }

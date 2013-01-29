@@ -1,4 +1,4 @@
-sodabox
+STALK.IO
 =======
 
-social realtime web communication solution
+this is social live chat platform
