@@ -1,0 +1,2 @@
+rootProject.name = 'sodabox'
+include "sodabox-starter", "sodabox-common", "mod-nodeWatcher", "mod-sessionManager", "mod-publishManager", "mod-subRedis", "mod-socketServer", "mod-webServer"

@@ -1,0 +1,4 @@
+{
+  "main": "io.sodabox.mod.http.WebServer",
+  "preserve-cwd": true
+}

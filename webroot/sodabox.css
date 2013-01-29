@@ -1,0 +1,167 @@
+.sodabox {
+	position: fixed;
+	position:expression("absolute");
+	width: 300px;
+	display:none;
+	font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+	font-size:11px;
+	z-index:9999;
+}
+
+.sodabox_head {
+	cursor:hand;
+	background-color: #2d2d2d;
+	padding: 7px;
+	color: #ffffff;
+	border-right:1px solid #2d2d2d;
+	border-left:1px solid #2d2d2d;
+}
+
+.sodabox_blink {
+	background-color: #176689;
+	border-right:1px solid #176689;
+	border-left:1px solid #176689;
+}
+
+.sodabox_content {
+	font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+	font-size: 13px;
+	color: #333333;
+	height:200px;
+	overflow-y:auto;
+	overflow-x:auto;
+	padding:7px;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-bottom:1px solid #eeeeee;
+	background-color: #ffffff;
+	line-height: 1.3em;
+	text-align: left;
+}
+
+.sodabox_input {
+	padding: 1px;
+	background-color: #ffffff;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+}
+
+.sodabox_login {
+	padding: 5px;
+	background-color: #ffffff;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+	border-top:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+	text-align: center;
+	vertical-align: middle;
+	color: #666666;
+}
+.sodabox_login img{
+     vertical-align: middle;
+	border:none;
+}
+.sodabox_login span {
+     font-weight: bold;
+     vertical-align: middle;
+     display:inline-block;
+     padding: 5px;
+}
+
+.sodabox_textarea {
+	width: 100%;
+	height:30px;
+	padding:3px 0px 3px 0px;
+	border: 1px solid #9c9c9c;
+	margin: 0px;
+	overflow:hidden;
+}
+
+.sodabox_textareaselected {
+	border: 2px solid #f99d39;
+	margin:0;
+}
+
+.sodabox_userlink {
+	font-size:90%;
+	color: #CC6714;
+	/*text-decoration: none;*/
+}
+
+.sodabox_message {
+	margin-left:1em;
+}
+
+.sodabox_messagetime{
+	color:#666666;
+	font-size:80%;
+}
+
+.sodabox_systemcontent {
+	/*font-style:italic; */
+	font-size:80%;
+	color: #808080;
+}
+
+.sodabox_info {
+	margin-left:-1em;
+	color:#666666;
+	font-size:85%;
+	font-style:italic;
+
+}
+
+.sodabox_messagefrom {
+	margin-left:-1em;
+	font-weight: bold;
+}
+
+.sodabox_userlink {
+	color: #CC6714;
+	text-decoration: none;
+}
+
+.sodabox_messagecontent {
+}
+
+.sodabox_options {
+	float: right;
+	text-decoration: none;
+}
+.sodabox_options img{
+	border:none;
+}
+
+.sodabox_title {
+	font-weight: bold;
+	float: left;
+}
+
+ .sodabox_tooltip{display:inline;position:relative}
+ .sodabox_tooltip:hover{text-decoration:none}
+ .sodabox_tooltip:hover:after{
+   background:#111;
+   background:rgba(0,0,0,.8);
+   border-radius:5px;
+   bottom:21px;
+   color:#fff;
+   content:attr(title);
+   display:block;
+   left:-30px;
+   padding:5px 15px;
+   position:absolute;
+   white-space:nowrap;
+   z-index:99998
+  }
+  .sodabox_tooltip:hover:before{
+    border:solid;
+    border-color:#111 transparent;
+    border-width:6px 6px 0 6px;
+    bottom:15px;
+    content:"";
+    display:block;
+    left:65%;
+    position:absolute;
+    z-index:99999
+   }

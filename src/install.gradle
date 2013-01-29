@@ -1,0 +1,50 @@
+task installs {
+	group = 'sodabox'
+	description = "install S/Ws"
+	
+	ant.delete(dir: 'temp')
+	ant.mkdir(dir: 'temp')
+	
+	println "1/3. downloading vert.x-1.3.1.final.tar.gz .....";
+	ant.get(src:'http://vertx.io/downloads/vert.x-1.3.1.final.tar.gz', dest: 'temp', verbose:true)
+	ant.delete(dir: '../bin/vertx');
+	copy {
+		from tarTree('temp/vert.x-1.3.1.final.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/vert.x-1.3.1.final'
+		into '../bin/vertx'
+	}
+
+	println "1/3. completed.";
+	
+	println "2/3. downloading redis-2.6.9.tar.gz .....";
+	ant.get(src:'http://redis.googlecode.com/files/redis-2.6.9.tar.gz', dest: 'temp', verbose:true)
+	ant.delete(dir: '../bin/redis');
+	copy {
+		from tarTree('temp/redis-2.6.9.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/redis-2.6.9'
+		into '../bin/redis'
+	}
+	println "2/3. completed.";
+	
+	println "3/3. downloading zookeeper-3.4.5.tar.gz .....";
+	ant.get(src:'http://apache.mirror.cdnetworks.com/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz', dest: 'temp', verbose:true, usetimestamp:true)
+	ant.delete(dir: '../bin/zookeeper');
+	copy {
+		from tarTree('temp/zookeeper-3.4.5.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/zookeeper-3.4.5'
+		into '../bin/zookeeper'
+	}
+	println "3/3. completed.";
+
+	ant.delete(dir: 'temp');
+}
+

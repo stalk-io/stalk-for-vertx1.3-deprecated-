@@ -1,0 +1,57 @@
+{
+	
+	"SUB-REDIS": {
+	
+		"module" : "io.sodabox.mod-subRedis-v1.2",
+		"config" : {
+			"host": "127.0.0.1",
+			"port": 9901,
+			"channel": "CH01"
+		}
+		
+	},
+		
+	"NODE-WATCHER": {
+	
+		"module" : "io.sodabox.mod-nodeWatcher-v1.2",
+		"instances" : 1,
+		"config" : {
+			"zookeeper-servers": [
+				{"host" : "localhost", "port" : "2181"}
+			]
+		}
+	},
+
+	"PUBLISH-MANAGER": {
+	
+		"module" : "io.sodabox.mod-publishManager-v1.2",
+		"instances" : 2,
+		"config" : {
+		}
+	},
+
+	"SESSION-MANAGER": {
+	
+		"module" : "io.sodabox.mod-sessionManager-v1.2",
+		"instances" : 3,
+		"config" : {
+			"session-storage": {
+				"host": "127.0.0.1",
+				"port": 8888
+			}
+		}
+	},
+
+	"SOCKET-SERVER": {
+	
+		"module" : "io.sodabox.mod-socketServer-v1.2",
+		"instances" : 5,
+		"config" : {
+			"channel": "CH01",
+			"host": "127.0.0.1",
+			"port": 8880
+		}
+		
+	}
+	
+}

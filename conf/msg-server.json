@@ -1,0 +1,58 @@
+{
+	"SOCK-SERVER": {
+	
+		"module" : "io.sodabox.mod-sockServer-v1.2",
+		
+		"instances" : 1,
+		
+		"config": {
+			"address": "mod-sockServer",
+			"host": "127.0.0.1",
+			"port": 8880
+		}
+		
+	},
+	
+	"SUB-REDIS": {
+	
+		"module" : "io.sodabox.mod-subRedis-v1.2",
+		
+		"instances" : 1,
+		
+		"config": {
+			"address": "mod-subRedis",
+			"host": "127.0.0.1",
+			"port": 9901,
+			"channel": "S0001",
+			"reply-address":"mod-sockServer"
+		}
+		
+	},
+		
+	"NODE-MANAGER": {
+	
+		"module" : "io.sodabox.mod-nodeManager-v1.2",
+		
+		"instances" : 2,
+		
+		"config": {
+			"address": "mod-nodeManager",
+			"zookeeper": [
+				{"host" : "localhost", "port" : "2181"}
+			],
+			"channel": "CH00011",
+			"mode": "SOCK-SERVER",
+			"nodes": {
+				"server": {
+					"host": "127.0.0.1",
+					"port": 8880
+				},
+				"redis": {
+					"host": "127.0.0.1",
+					"port": 9901
+				}
+			}
+		}
+	}
+	
+}

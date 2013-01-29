@@ -1,0 +1,224 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+task wrapper(type: Wrapper) {
+	group = 'sodabox'
+	description = "create Gradle Wrapper"
+	
+	gradleVersion = '1.3'
+}
+
+task dist {
+	group = 'sodabox'
+	description = "distribution"
+	
+	println "distribution - modules, commone libraries and start application "
+}
+
+dist.enabled = false
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	
+	sourceCompatibility = '1.7'
+	targetCompatibility = '1.7'
+	version = '1.2'
+	
+	compileJava.options.encoding = 'UTF-8'
+	javadoc.options.encoding = 'UTF-8'
+
+	repositories {
+		mavenCentral()
+	}
+	configurations {
+		provided
+	}
+	sourceSets {
+		main {
+			compileClasspath = compileClasspath + configurations.provided
+		}
+	}
+	eclipse {
+		classpath {
+			plusConfigurations += configurations.provided
+		}
+	}
+
+	dependencies {
+		provided "org.vert-x:vertx-core:$vertxVersion"
+		provided "org.vert-x:vertx-platform:$vertxVersion"
+	}
+}
+
+project(':sodabox-common'){
+	jar.enabled = true
+
+	dependencies {
+		compile fileTree(dir: 'ext-libs', include: '*.*')
+		compile 'redis.clients:jedis:2.1.0'
+		compile 'com.google.guava:guava:13.0.1'
+		compile 'commons-lang:commons-lang:2.6'
+		compile 'org.slf4j:slf4j-log4j12:1.6.6'
+	}
+
+	task dist( type:Copy, dependsOn: 'jar' ) {
+		group = 'sodabox'
+		description = "... ^^; "
+
+		into "../../bin/vertx/lib"
+		from configurations.compile
+		from 'build/libs'
+	}
+}
+
+project(':sodabox-starter'){
+	jar.enabled = true
+	
+	dependencies {
+	}
+
+	task dist( type:Copy, dependsOn: 'jar' ) {
+		group = 'sodabox'
+		description = "... ^^; "
+
+		into "../../lib"
+		from 'build/libs'
+	}
+}
+
+configure(subprojects.findAll {it.name.startsWith('mod-')}){
+	jar.enabled = false
+	
+	dependencies {
+		provided project(':sodabox-common')
+	}
+	
+	task dist( type:Copy, dependsOn: 'classes' ) {
+		group = 'sodabox'
+		description = "copy vertx module to /mods "
+
+		delete "../../mods/$modulename-v$version"
+
+		into "../../mods/$modulename-v$version"
+		from 'build/classes/main'
+		from 'src/main/conf'
+		into( 'lib' ) {
+			from configurations.compile
+		}
+	}
+}
+
+
+// MINIFY JAVASCRIPT !!!!
+
+
+// Pull the plugin from a Maven Repo
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.eriwen:gradle-js-plugin:1.3.1'
+	}
+}
+// Invoke the plugin
+apply plugin: 'js'
+
+// Declare your sources
+javascript.source {
+	dev {
+		js {
+			srcDir "../webroot/"
+			include "*.js"
+			exclude "*.min.js"
+		}
+	}
+	prod {
+		js {
+			srcDir "../webroot/"
+			include "*.min.js"
+		}
+	}
+}
+
+// Specify a collection of files to be combined, then minified and finally GZip compressed.
+task combinejs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+	source = {
+		srcDir "../webroot/"
+		include "*.js"
+		exclude "*.min.js"
+	}
+	dest = file("../webroot/sodabox-all.js")
+}
+
+task minifyjs(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+	source = combinejs
+	dest = file("../webroot/sodabox-min.js")
+	closure {
+		warningLevel = 'QUIET'
+	}
+}
+
+task gzipjs(type: com.eriwen.gradle.js.tasks.GzipJsTask) {
+	source = minifyjs
+	dest = file("../webroot/sodabox-min.js")
+}
+
+
+
+
+
+task installsoftware {
+	group = 'sodabox'
+	description = "install S/W"
+	
+	//ant.delete(dir: 'temp')
+	ant.mkdir(dir: 'temp')
+	
+	println "1/3. downloading vert.x-1.3.1.final.tar.gz .....";
+	//ant.get(src:'http://vertx.io/downloads/vert.x-1.3.1.final.tar.gz', dest: 'temp', verbose:true)
+	ant.delete(dir: '../bin/vertx');
+	copy {
+		from tarTree('temp/vert.x-1.3.1.final.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/vert.x-1.3.1.final'
+		into '../bin/vertx'
+	}
+
+	println "1/3. completed.";
+	
+	println "2/3. downloading redis-2.6.9.tar.gz .....";
+	//ant.get(src:'http://redis.googlecode.com/files/redis-2.6.9.tar.gz', dest: 'temp', verbose:true)
+	ant.delete(dir: '../bin/redis');
+	copy {
+		from tarTree('temp/redis-2.6.9.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/redis-2.6.9'
+		into '../bin/redis'
+	}
+	println "2/3. completed.";
+	
+	println "3/3. downloading zookeeper-3.4.5.tar.gz .....";
+	//ant.get(src:'http://apache.mirror.cdnetworks.com/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz', dest: 'temp', verbose:true, usetimestamp:true)
+	ant.delete(dir: '../bin/zookeeper');
+	copy {
+		from tarTree('temp/zookeeper-3.4.5.tar.gz')
+		into 'temp'
+	}
+	copy {
+		from 'temp/zookeeper-3.4.5'
+		into '../bin/zookeeper'
+	}
+	println "3/3. completed.";
+
+	//ant.delete(dir: 'temp');
+}
+
+installsoftware.onlyIf { project.hasProperty('setup') }
+
+installsoftware.enabled = false

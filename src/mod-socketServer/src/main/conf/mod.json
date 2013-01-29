@@ -1,0 +1,4 @@
+{
+  "main": "io.sodabox.mod.message.SockServer",
+  "preserve-cwd": true
+}

@@ -1,0 +1,57 @@
+{ 
+
+	"NODE-MANAGER": {
+	
+		"module" : "io.sodabox.mod-nodeManager-v1.2",
+		
+		"instances" : 2,
+		
+		"config": {
+			"address": "mod-nodeManager",
+			"mode": "WEB-SERVER",
+			"zookeeper": [
+				{"host" : "localhost", "port" : "2181"}
+			]
+		}
+		
+	},
+	
+	"WEB-SERVER": {
+		
+		"module" : "io.sodabox.mod-webServer-v1.2",
+		
+		"instances" : 5,
+		
+		"config": {
+		
+			"address": "mod-webServer",
+			"host": "127.0.0.1",
+			"port": 8080,
+			"webRootPrefix": "webroot",
+		
+			"oauth": {
+	    	
+		    	"proxy.host": "",
+		    	"proxy.port": "",
+		    	"http.connectionTimeOut": "5000",
+		    	
+		    	"www.google.com" : {
+		    		"consumer_key": "opensource.brickred.com",
+		    		"consumer_secret": "YC06FqhmCLWvtBg/O4W/aJfj",
+		    		"callback_url": "http://www.sodabox.io:8080/auth/callback"
+		    	},
+		    	"twitter.com" : {
+		    		"consumer_key": "qOxMR9PbIN3AIIL1xNhwIA",
+		    		"consumer_secret": "Y0OlUN3Uz3I0nBQjF93H4Hy3wiBfKVch5Fb72REuuYg",
+		    		"callback_url": "http://www.sodabox.io:8080/auth/callback"
+		    	},
+		    	"graph.facebook.com" : {
+		    		"consumer_key": "392955947454364",
+		    		"consumer_secret": "07f3a7d48ccaeb256529df5934777e17",
+		    		"callback_url": "http://www.sodabox.io:8080/auth/callback"
+		    	}
+		    }
+		}
+	}
+	
+}
