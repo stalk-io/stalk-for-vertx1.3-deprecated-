@@ -9,7 +9,6 @@ import java.io.File;
 
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.file.impl.PathAdjuster;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonObject;
@@ -39,7 +38,7 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 		String index	= getOptionalStringConfig	(WEB_SERVER.INDEX_PAGE, WEB_SERVER.DEFAULT.INDEX_PAGE);
 		String host		= getOptionalStringConfig	(WEB_SERVER.HOST, 		WEB_SERVER.DEFAULT.HOST);
 		int	   port		= getOptionalIntConfig		(WEB_SERVER.PORT,		WEB_SERVER.DEFAULT.PORT);
-		
+
 		indexPage = webRoot + File.separator + index;
 
 		// set socialAuthManager
@@ -60,9 +59,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 		HttpServer server = vertx.createHttpServer();
 		server.requestHandler(this);
 		server.listen(port, host);
-		
+
 		// starting watching nodes !!!!
-		eb.send(NODE_WATCHER.ADDRESS, new JsonObject().putString("action", NODE_WATCHER.ACTION.START_WATCHING));
+		eb.send(NODE_WATCHER.DEFAULT.ADDRESS, new JsonObject().putString("action", NODE_WATCHER.ACTION.START_WATCHING));
 
 		DEBUG("Web Server is started [%s:%d]", host, port);
 

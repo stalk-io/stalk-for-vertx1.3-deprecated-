@@ -5,7 +5,7 @@
 		"module" : "io.stalk.mod-subRedis-v1.2",
 		"config" : {
 			"host": "127.0.0.1",
-			"port": 9902,
+			"port": 9992,
 			"channel": "CH02"
 		}
 		

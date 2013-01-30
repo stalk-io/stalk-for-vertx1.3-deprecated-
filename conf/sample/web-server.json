@@ -1,8 +1,9 @@
 { 
 	
+
 	"NODE-WATCHER": {
 	
-		"module" : "io.sodabox.mod-nodeWatcher-v1.2",
+		"module" : "io.stalk.mod-nodeWatcher-v1.2",
 		"instances" : 1,
 		"config" : {
 			"zookeeper-servers": [
@@ -11,53 +12,34 @@
 		}
 	},
 
-	"NODE-MANAGER": {
+	"PUBLISH-MANAGER": {
 	
-		"module" : "io.sodabox.mod-nodeManager-v1.2",
-		
+		"module" : "io.stalk.mod-publishManager-v1.2",
 		"instances" : 2,
-		
-		"config": {
-			"address": "mod-nodeManager",
-			"mode": "WEB-SERVER",
-			"zookeeper": [
-				{"host" : "localhost", "port" : "2181"}
-			]
+		"config" : {
 		}
-		
 	},
-	
+
 	"SESSION-MANAGER": {
 	
-		"module" : "io.sodabox.mod-sessionManager-v1.2",
-		
-		"instances" : 2,
-		
-		"config": {
-			"address": "mod-sessionManager",
-			"mode": "WEB-SERVER",
-			"zookeeper": [
-				{"host" : "localhost", "port" : "2181"}
-			],
-			"nodes": {
-				"server": {
-					"host": "127.0.0.1",
-					"port": 8880
-				}
+		"module" : "io.stalk.mod-sessionManager-v1.2",
+		"instances" : 3,
+		"config" : {
+			"session-storage": {
+				"host": "127.0.0.1",
+				"port": 8888
 			}
 		}
-		
 	},
 	
 	"WEB-SERVER": {
 		
-		"module" : "io.sodabox.mod-webServer-v1.2",
+		"module" : "io.stalk.mod-webServer-v1.2",
 		
 		"instances" : 5,
 		
 		"config": {
 		
-			"address": "mod-webServer",
 			"host": "127.0.0.1",
 			"port": 80,
 			"webRootPrefix": "webroot",

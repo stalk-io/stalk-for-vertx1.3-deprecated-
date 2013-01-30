@@ -5,7 +5,7 @@
 		"module" : "io.stalk.mod-subRedis-v1.2",
 		"config" : {
 			"host": "127.0.0.1",
-			"port": 9901,
+			"port": 9991,
 			"channel": "CH01"
 		}
 		
@@ -48,8 +48,14 @@
 		"instances" : 5,
 		"config" : {
 			"channel": "CH01",
-			"host": "127.0.0.1",
-			"port": 8081
+			"server": {
+				"host": "127.0.0.1",
+				"port": 8081
+			},
+			"redis": {
+				"host": "127.0.0.1",
+				"port": 9991
+			}
 		}
 		
 	}

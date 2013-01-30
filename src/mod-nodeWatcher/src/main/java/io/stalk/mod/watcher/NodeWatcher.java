@@ -2,10 +2,12 @@ package io.stalk.mod.watcher;
 
 
 import io.stalk.common.api.NODE_WATCHER;
+import io.stalk.common.api.PUBLISH_MANAGER;
+import io.stalk.common.api.SESSION_MANAGER;
 import io.stalk.common.server.zk.ZooKeeperClient;
+import io.stalk.common.server.zk.ZooKeeperClient.Credentials;
 import io.stalk.common.server.zk.ZooKeeperConnectionException;
 import io.stalk.common.server.zk.ZooKeeperUtils;
-import io.stalk.common.server.zk.ZooKeeperClient.Credentials;
 
 import java.util.List;
 
@@ -74,32 +76,32 @@ public class NodeWatcher extends BusModBase implements Handler<Message<JsonObjec
 		if(isReady){
 
 			if(NODE_WATCHER.ACTION.CREATE_NODE.equals(action)){
-				
+
 				if(isCreated){
-					
+
 					sendOK(message);
-					
+
 				}else{
-				
+
 					try {
 						createNode(
 								message.body.getString("channel"),
 								message.body.getObject("data")
 								);
-	
+
 						isCreated = true;
-						
+
 						// OK 
 						sendOK(message);
-	
+
 					} catch (ZooKeeperConnectionException 
 							| InterruptedException
 							| KeeperException e) {
 						e.printStackTrace();
-	
+
 						// ERROR
 						sendError(message, e.getMessage());
-	
+
 					}
 				}
 
@@ -188,21 +190,27 @@ public class NodeWatcher extends BusModBase implements Handler<Message<JsonObjec
 
 			}
 
-			eb.publish("sessionManager", 
-					new JsonObject().putString("action", "refresh").putArray("channels", servers) );
+			eb.publish(SESSION_MANAGER.DEFAULT.ADDRESS
+					, new JsonObject()
+			.putString("action", SESSION_MANAGER.ACTION.REFRESH_NODES)
+			.putArray("channels", servers) 
+					);
 
-			eb.publish("nodeManager", 
-					new JsonObject().putString("action", "refresh").putArray("channels", redises) );
+			eb.publish(PUBLISH_MANAGER.DEFAULT.ADDRESS
+					, new JsonObject()
+			.putString("action", PUBLISH_MANAGER.ACTION.REFRESH_NODES)
+			.putArray("channels", redises) 
+					);
 
 		}else{
 
 			ERROR("message server is not existed from [%s]", rootPath);
 
-			eb.publish("sessionManager", 
-					new JsonObject().putString("action", "destroy"));
+			eb.publish(SESSION_MANAGER.DEFAULT.ADDRESS, 
+					new JsonObject().putString("action", SESSION_MANAGER.ACTION.DESTORY_NODES));
 
-			eb.publish("nodeManager", 
-					new JsonObject().putString("action", "destroy"));
+			eb.publish(PUBLISH_MANAGER.DEFAULT.ADDRESS, 
+					new JsonObject().putString("action", PUBLISH_MANAGER.ACTION.DESTORY_NODES));
 
 		}
 

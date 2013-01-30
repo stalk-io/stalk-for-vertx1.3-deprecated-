@@ -65,6 +65,8 @@ public class SessionManager extends BusModBase implements Handler<Message<JsonOb
 			this.redisPool = jedisPool;
 		}
 
+		isReady = true;
+		
 		eb.registerHandler(address, this);
 	}
 

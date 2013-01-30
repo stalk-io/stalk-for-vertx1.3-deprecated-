@@ -47,6 +47,8 @@ public class WebServer extends AbstractModule{
 				System.out.println(arg0);
 			};
 		});
+		
+		System.out.println(" > "+req.path);
 
 		// server node 받아오기.
 		if("/node".equals(req.path)){
@@ -57,7 +59,7 @@ public class WebServer extends AbstractModule{
 				reqJson.putString("action"	, SESSION_MANAGER.ACTION.IN);
 				reqJson.putString("refer"	, req.params().get("refer"));
 				
-				eb.send(SESSION_MANAGER.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
+				eb.send(SESSION_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
 					public void handle(Message<JsonObject> message) {
 
 						StringBuffer returnStr = new StringBuffer("");
@@ -183,7 +185,7 @@ public class WebServer extends AbstractModule{
 					jsonMessage.putString("refer"		, refer);
 					jsonMessage.putObject("user"		, profileJson);
 
-					eb.send(PUBLISH_MANAGER.ADDRESS, jsonMessage);
+					eb.send(PUBLISH_MANAGER.DEFAULT.ADDRESS, jsonMessage);
 
 
 					// Delete Cookies

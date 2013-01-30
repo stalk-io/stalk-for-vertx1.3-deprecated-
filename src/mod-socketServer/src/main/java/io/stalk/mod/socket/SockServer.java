@@ -37,7 +37,7 @@ public class SockServer extends AbstractModule {
 					sendMessageToAll(session.REFER, json.encode());	
 				}
 
-				eb.send(SESSION_MANAGER.ADDRESS, 
+				eb.send(SESSION_MANAGER.DEFAULT.ADDRESS, 
 						new JsonObject()
 				.putString("action", SESSION_MANAGER.ACTION.UPDATE)
 				.putString("refer", session.REFER)
@@ -72,7 +72,7 @@ public class SockServer extends AbstractModule {
 
 					Set<String> socks = getSocketIds(refer);
 
-					eb.send(SESSION_MANAGER.ADDRESS, 
+					eb.send(SESSION_MANAGER.DEFAULT.ADDRESS, 
 							new JsonObject()
 					.putString("action", SESSION_MANAGER.ACTION.UPDATE)
 					.putString("refer", refer)

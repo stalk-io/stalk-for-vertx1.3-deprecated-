@@ -45,7 +45,7 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 
 		server.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest req) {
-				
+
 				if (!req.path.startsWith("/message")){
 					System.out.println(" *** bad request path *** "+req.path);
 					req.response.statusCode = 404;
@@ -54,9 +54,12 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 			}
 		});
 
-		String 	host = getOptionalStringConfig(	SOCKET_SERVER.HOST, SOCKET_SERVER.DEFAULT.HOST);
-		int		port = getOptionalIntConfig(	SOCKET_SERVER.PORT, SOCKET_SERVER.DEFAULT.PORT);
-		
+		JsonObject serverConf 	= getOptionalObjectConfig("server"	, new JsonObject());
+		JsonObject redisConf 	= getOptionalObjectConfig("redis"	, new JsonObject());
+
+		String 	host = serverConf.getString(	SOCKET_SERVER.HOST);
+		int		port = serverConf.getInteger(	SOCKET_SERVER.PORT);
+
 		SockJSServer sockServer = vertx.createSockJSServer(server);
 		sockServer.installApp(new JsonObject().putString("prefix", "/message"), this);
 		server.listen(port, host);
@@ -66,15 +69,16 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 		createNodeAction.putString("action", NODE_WATCHER.ACTION.CREATE_NODE);
 		createNodeAction.putString("channel", channel);
 		createNodeAction.putObject("data", 
-				new JsonObject().putString("channel", channel)
-				.putString("host", host)
-				.putNumber("port", port)
+				new JsonObject()
+		.putObject("server"	, serverConf)
+		.putObject("redis"	, redisConf	)
 				);
-		eb.send(NODE_WATCHER.ADDRESS, createNodeAction);
-		
+
+		eb.send(NODE_WATCHER.DEFAULT.ADDRESS, createNodeAction);
+
 		// starting watching nodes !!!!
-		eb.send(NODE_WATCHER.ADDRESS, new JsonObject().putString("action", NODE_WATCHER.ACTION.START_WATCHING));
-		
+		eb.send(NODE_WATCHER.DEFAULT.ADDRESS, new JsonObject().putString("action", NODE_WATCHER.ACTION.START_WATCHING));
+
 		eb.registerHandler(address, getMessageHandler());
 
 		DEBUG("Message Server(%s) is started [%s:%d]", address, host, port);
@@ -130,9 +134,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 	}
 
 	protected void sendMessage(String socketId, String message){
-		
+
 		DEBUG("SEND MESSAGE %s -> %s", socketId, message);
-		
+
 		vertx.eventBus().send(socketId, new Buffer(message));
 	}
 

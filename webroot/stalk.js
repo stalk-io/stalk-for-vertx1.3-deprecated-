@@ -1,7 +1,7 @@
 var SODABOX_conf = {
 	httpUrl 	: "http://www.sodabox.io",
 	serverInfo 	: {},
-	divName 	: "SODABOX_SCREEN",
+	divName 	: "STALK_SCREEN",
 	refer 		: "",
 	user 		: {},
 	isLogined 	: false,
@@ -164,7 +164,7 @@ var SODABOX_window = {
         this.rootDivName = rootDivName;
         this.imageServer = imageServer;
 		
-		SODABOX_utils.loadCss(this.imageServer+'/sodabox.css');
+		SODABOX_utils.loadCss(this.imageServer+'/stalk.css');
 		
         var div_root = document.getElementById(rootDivName);
 
