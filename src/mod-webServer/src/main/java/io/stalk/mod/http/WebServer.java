@@ -28,7 +28,7 @@ import org.vertx.java.core.json.JsonObject;
 public class WebServer extends AbstractModule{
 
 	interface OAUTH_COOKIE {
-		String NAME 	= "SODABOX";
+		String NAME 	= "STALK";
 
 		interface VALUE{
 			String CHANNEL 			= "_channel";
@@ -50,7 +50,7 @@ public class WebServer extends AbstractModule{
 		
 		System.out.println(" > "+req.path);
 
-		// server node 받아오기.
+		// server node 諛쏆븘�ㅺ린.
 		if("/node".equals(req.path)){
 
 			if(!StringUtils.isEmpty(req.params().get("refer"))){
@@ -83,7 +83,7 @@ public class WebServer extends AbstractModule{
 				req.response.end("");    
 			}
 
-		}else if("/auth".equals(req.path)){ // 인증 시
+		}else if("/auth".equals(req.path)){ // �몄쬆 ��
 
 			String target = req.params().get("target");
 
@@ -120,7 +120,7 @@ public class WebServer extends AbstractModule{
 
 
 
-		}else if("/auth/callback".equals(req.path)){ // 인증 완료.
+		}else if("/auth/callback".equals(req.path)){ // �몄쬆 �꾨즺.
 
 			String value = req.headers().get(HttpHeaders.Names.COOKIE);
 			DEBUG("cookie string : %s ", value);
@@ -137,7 +137,7 @@ public class WebServer extends AbstractModule{
 				if (cookie.getName().equals(OAUTH_COOKIE.NAME)) {
 					JsonObject cookieJson = new JsonObject(cookie.getValue());
 
-					DEBUG("SODABOX cookies : %s", cookieJson.encode());
+					DEBUG("STALK cookies : %s", cookieJson.encode());
 
 					JsonObject json = new JsonObject(cookieJson.getString(OAUTH_COOKIE.VALUE.REQUEST_TOKEN));
 
@@ -214,7 +214,7 @@ public class WebServer extends AbstractModule{
 		}else if("/preview".equals(req.path)){
 
 			String addHtml = 
-					"<script type=\"text/javascript\" src=\"http://www.sodabox.io/sodabox.js\" charset=\"utf-8\"></script><script language=\"javascript\">SODABOX.init();</script>";
+					"<script type=\"text/javascript\" src=\"http://www.stalk.io/stalk.js\" charset=\"utf-8\"></script><script language=\"javascript\">STALK.init();</script>";
 			StringBuffer html = new StringBuffer();
 
 			String result = "";

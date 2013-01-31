@@ -1,5 +1,5 @@
 task wrapper(type: Wrapper) {
-	group = 'sodabox'
+	group = 'stalk'
 	description = "Generates gradlew and gradlew.bat bootstrap scripts"
 	gradleVersion = '1.3'
 }

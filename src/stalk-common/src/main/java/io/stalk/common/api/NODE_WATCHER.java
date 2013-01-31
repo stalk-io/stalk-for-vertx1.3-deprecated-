@@ -18,7 +18,7 @@ public interface NODE_WATCHER {
 	interface DEFAULT {
 		String ADDRESS 			= "nodeWatcher";
 		int	   TIMEOUT 			= 1000;
-		String ROOT_PATH 		= "/SODABOX/node";
+		String ROOT_PATH 		= "/STALK/node";
 	}
 	
 	/* Actions */

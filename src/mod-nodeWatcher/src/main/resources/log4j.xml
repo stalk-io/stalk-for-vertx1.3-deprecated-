@@ -12,7 +12,7 @@
 	</appender>
 
 	<!-- 3rdparty Loggers -->
-	<logger name="io.sodabox">
+	<logger name="io.stalk">
 		<level value="debug" />
 	</logger>
 

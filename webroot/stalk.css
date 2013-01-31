@@ -1,4 +1,4 @@
-.sodabox {
+.stalk {
 	position: fixed;
 	position:expression("absolute");
 	width: 300px;
@@ -8,7 +8,7 @@
 	z-index:9999;
 }
 
-.sodabox_head {
+.stalk_head {
 	cursor:hand;
 	background-color: #2d2d2d;
 	padding: 7px;
@@ -17,13 +17,13 @@
 	border-left:1px solid #2d2d2d;
 }
 
-.sodabox_blink {
+.stalk_blink {
 	background-color: #176689;
 	border-right:1px solid #176689;
 	border-left:1px solid #176689;
 }
 
-.sodabox_content {
+.stalk_content {
 	font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
 	font-size: 13px;
 	color: #333333;
@@ -39,7 +39,7 @@
 	text-align: left;
 }
 
-.sodabox_input {
+.stalk_input {
 	padding: 1px;
 	background-color: #ffffff;
 	border-left:1px solid #cccccc;
@@ -47,7 +47,7 @@
 	border-bottom:1px solid #cccccc;
 }
 
-.sodabox_login {
+.stalk_login {
 	padding: 5px;
 	background-color: #ffffff;
 	border-left:1px solid #cccccc;
@@ -58,18 +58,18 @@
 	vertical-align: middle;
 	color: #666666;
 }
-.sodabox_login img{
+.stalk_login img{
      vertical-align: middle;
 	border:none;
 }
-.sodabox_login span {
+.stalk_login span {
      font-weight: bold;
      vertical-align: middle;
      display:inline-block;
      padding: 5px;
 }
 
-.sodabox_textarea {
+.stalk_textarea {
 	width: 100%;
 	height:30px;
 	padding:3px 0px 3px 0px;
@@ -78,33 +78,33 @@
 	overflow:hidden;
 }
 
-.sodabox_textareaselected {
+.stalk_textareaselected {
 	border: 2px solid #f99d39;
 	margin:0;
 }
 
-.sodabox_userlink {
+.stalk_userlink {
 	font-size:90%;
 	color: #CC6714;
 	/*text-decoration: none;*/
 }
 
-.sodabox_message {
+.stalk_message {
 	margin-left:1em;
 }
 
-.sodabox_messagetime{
+.stalk_messagetime{
 	color:#666666;
 	font-size:80%;
 }
 
-.sodabox_systemcontent {
+.stalk_systemcontent {
 	/*font-style:italic; */
 	font-size:80%;
 	color: #808080;
 }
 
-.sodabox_info {
+.stalk_info {
 	margin-left:-1em;
 	color:#666666;
 	font-size:85%;
@@ -112,35 +112,35 @@
 
 }
 
-.sodabox_messagefrom {
+.stalk_messagefrom {
 	margin-left:-1em;
 	font-weight: bold;
 }
 
-.sodabox_userlink {
+.stalk_userlink {
 	color: #CC6714;
 	text-decoration: none;
 }
 
-.sodabox_messagecontent {
+.stalk_messagecontent {
 }
 
-.sodabox_options {
+.stalk_options {
 	float: right;
 	text-decoration: none;
 }
-.sodabox_options img{
+.stalk_options img{
 	border:none;
 }
 
-.sodabox_title {
+.stalk_title {
 	font-weight: bold;
 	float: left;
 }
 
- .sodabox_tooltip{display:inline;position:relative}
- .sodabox_tooltip:hover{text-decoration:none}
- .sodabox_tooltip:hover:after{
+ .stalk_tooltip{display:inline;position:relative}
+ .stalk_tooltip:hover{text-decoration:none}
+ .stalk_tooltip:hover:after{
    background:#111;
    background:rgba(0,0,0,.8);
    border-radius:5px;
@@ -154,7 +154,7 @@
    white-space:nowrap;
    z-index:99998
   }
-  .sodabox_tooltip:hover:before{
+  .stalk_tooltip:hover:before{
     border:solid;
     border-color:#111 transparent;
     border-width:6px 6px 0 6px;

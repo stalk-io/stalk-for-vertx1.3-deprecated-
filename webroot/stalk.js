@@ -1,5 +1,5 @@
-var SODABOX_conf = {
-	httpUrl 	: "http://www.sodabox.io",
+var STALK_conf = {
+	httpUrl 	: "http://www.stalk.io",
 	serverInfo 	: {},
 	divName 	: "STALK_SCREEN",
 	refer 		: "",
@@ -10,7 +10,7 @@ var SODABOX_conf = {
 	currentUserCnt : 0
 }
 
-var SODABOX_utils = {
+var STALK_utils = {
 
      getHashCode : function(s){
         var hash = 0;
@@ -84,7 +84,7 @@ var SODABOX_utils = {
 	{
 		var date = new Date();
 		date.setDate(date.getDate() + 10);
-		document.cookie = 'SODABOX=' + escape(JSON.stringify(userInfo)) + 
+		document.cookie = 'STALK=' + escape(JSON.stringify(userInfo)) + 
 		';expires=' + date.toGMTString()+';path=/';
 	},
 	
@@ -92,14 +92,14 @@ var SODABOX_utils = {
 		var date = new Date(); 
 		var validity = -1;
 		date.setDate(date.getDate() + validity);
-		document.cookie = "SODABOX=;expires=" + date.toGMTString()+';path=/';
+		document.cookie = "STALK=;expires=" + date.toGMTString()+';path=/';
 	},
 	getUserInfo : function() {
 		var allcookies = document.cookie;
 		var cookies = allcookies.split("; ");
 		for ( var i = 0; i < cookies.length; i++) {
 			var keyValues = cookies[i].split("=");
-			if (keyValues[0] == "SODABOX") {
+			if (keyValues[0] == "STALK") {
 				console.log(keyValues[1]);
 				return JSON.parse(unescape(keyValues[1]));
 			}
@@ -111,7 +111,7 @@ var SODABOX_utils = {
 		var cookies = allcookies.split("; ");
 		for ( var i = 0; i < cookies.length; i++) {
 			var keyValues = cookies[i].split("=");
-			if (keyValues[0] == "SODABOX") {
+			if (keyValues[0] == "STALK") {
 				console.log(unescape(keyValues[1]));
 			}
 		}
@@ -122,7 +122,7 @@ var SODABOX_utils = {
 
 
 
-var SODABOX_window = {
+var STALK_window = {
     
     rootDivName     : '',
     imageServer     : '',
@@ -164,7 +164,7 @@ var SODABOX_window = {
         this.rootDivName = rootDivName;
         this.imageServer = imageServer;
 		
-		SODABOX_utils.loadCss(this.imageServer+'/stalk.css');
+		STALK_utils.loadCss(this.imageServer+'/stalk.css');
 		
         var div_root = document.getElementById(rootDivName);
 
@@ -175,21 +175,21 @@ var SODABOX_window = {
 			div_root.style.bottom = '0px';
 			div_root.style.right = '100px';
 			div_root.style.width = this.divOpenWidth;
-            this.addClass(div_root, "sodabox");
+            this.addClass(div_root, "stalk");
             document.getElementsByTagName('body')[0].appendChild(div_root);
         }
 		
 		this.divOpenWidth = this.getStyle(div_root, 'width');
 		
         div_root.innerHTML = 
-		'<div id="'+rootDivName+'_head" onclick="javascript:return SODABOX_window.toggleChatBoxGrowth();" class="sodabox_head" >'+
-		'<div id="'+rootDivName+'_title" class="sodabox_title"></div><div id="'+rootDivName+'_options" class="sodabox_options"></div><div id="'+rootDivName+'_size" class="sodabox_options"></div><br clear="all"></div>'+
-		'<div id="'+rootDivName+'_content" class="sodabox_content"></div>'+
-		'<div id="'+rootDivName+'_input" class="sodabox_input"><textarea id="'+rootDivName+'_textarea" class="sodabox_textarea" onkeydown="javascript:return SODABOX_window.inputChatMessage(event,this);" ></textarea></div>'+
-        '<div id="'+rootDivName+'_login" class="sodabox_login"><span>Connect with</span> '+
-        '<a href="#" class="sodabox_tooltip" title="login with facebook" onclick="return !window.open(SODABOX.getOauthUrl(\'facebook\'),\'SODABOX_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/facebook.png" width="30px" style="cursor:pointer;" /></a>&nbsp;'+
-        '<a href="#" class="sodabox_tooltip" title="login with twitter" onclick="return !window.open(SODABOX.getOauthUrl(\'twitter\'),\'SODABOX_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/twitter.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
-        '<a href="#" class="sodabox_tooltip" title="login with google" onclick="return !window.open(SODABOX.getOauthUrl(\'google\'),\'SODABOX_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/google.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
+		'<div id="'+rootDivName+'_head" onclick="javascript:return STALK_window.toggleChatBoxGrowth();" class="stalk_head" >'+
+		'<div id="'+rootDivName+'_title" class="stalk_title"></div><div id="'+rootDivName+'_options" class="stalk_options"></div><div id="'+rootDivName+'_size" class="stalk_options"></div><br clear="all"></div>'+
+		'<div id="'+rootDivName+'_content" class="stalk_content"></div>'+
+		'<div id="'+rootDivName+'_input" class="stalk_input"><textarea id="'+rootDivName+'_textarea" class="stalk_textarea" onkeydown="javascript:return STALK_window.inputChatMessage(event,this);" ></textarea></div>'+
+        '<div id="'+rootDivName+'_login" class="stalk_login"><span>Connect with</span> '+
+        '<a href="#" class="stalk_tooltip" title="login with facebook" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/facebook.png" width="30px" style="cursor:pointer;" /></a>&nbsp;'+
+        '<a href="#" class="stalk_tooltip" title="login with twitter" onclick="return !window.open(STALK.getOauthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/twitter.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
+        '<a href="#" class="stalk_tooltip" title="login with google" onclick="return !window.open(STALK.getOauthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/google.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
         '</div>'
 
         var div_content = document.getElementById(rootDivName+'_content');
@@ -228,16 +228,16 @@ var SODABOX_window = {
     	if(isDone){
     		clearInterval(this.blinkTimeout);
 			var titleDivForBlick = document.getElementById(this.rootDivName+'_head')
-    		this.removeClass(titleDivForBlick, 'sodabox_blink');
+    		this.removeClass(titleDivForBlick, 'stalk_blink');
     	}else{
     		clearInterval(this.blinkTimeout);
     		this.blinkTimeout = 
 	    		setInterval(function(){ 
-	    			var titleDivForBlick = document.getElementById(SODABOX_window.rootDivName+'_head')
-	    			if(SODABOX_window.hasClass(titleDivForBlick, 'sodabox_blink')){
-	    				SODABOX_window.removeClass(titleDivForBlick, 'sodabox_blink');
+	    			var titleDivForBlick = document.getElementById(STALK_window.rootDivName+'_head')
+	    			if(STALK_window.hasClass(titleDivForBlick, 'stalk_blink')){
+	    				STALK_window.removeClass(titleDivForBlick, 'stalk_blink');
 	    			}else{
-	    				SODABOX_window.addClass(titleDivForBlick, 'sodabox_blink');
+	    				STALK_window.addClass(titleDivForBlick, 'stalk_blink');
 	    			}
 	    		},1000);
     	}
@@ -260,7 +260,7 @@ var SODABOX_window = {
             
             if(message.length > 0){
                 
-            	SODABOX.sendMessage(encodeURIComponent(message));
+            	STALK.sendMessage(encodeURIComponent(message));
                     
                 chatboxtextarea.value = '';
                 //chatboxtextarea.focus();
@@ -290,10 +290,10 @@ var SODABOX_window = {
         var div_content = document.getElementById(this.rootDivName+'_content');
         
         var chatDiv = document.createElement("div");
-        this.addClass(chatDiv, 'sodabox_message');
+        this.addClass(chatDiv, 'stalk_message');
         chatDiv.innerHTML = 
-        	'<span class="sodabox_messagefrom"><a target="_blank" href="'+user.link+'" class="sodabox_userlink" alt="GO TO User Page!">'+user.name+'</a>:&nbsp;&nbsp;</span><span class="sodabox_messagecontent">'+
-        	decodeURIComponent(message)+'</span>&nbsp;&nbsp;&nbsp;<span class="sodabox_messagetime">'+this.getNowStr()+'</span>';
+        	'<span class="stalk_messagefrom"><a target="_blank" href="'+user.link+'" class="stalk_userlink" alt="GO TO User Page!">'+user.name+'</a>:&nbsp;&nbsp;</span><span class="stalk_messagecontent">'+
+        	decodeURIComponent(message)+'</span>&nbsp;&nbsp;&nbsp;<span class="stalk_messagetime">'+this.getNowStr()+'</span>';
         
         div_content.appendChild(chatDiv);
         div_content.scrollTop = div_content.scrollHeight;
@@ -309,8 +309,8 @@ var SODABOX_window = {
         var div_content = document.getElementById(this.rootDivName+'_content');
         
         var chatDiv = document.createElement("div");
-        this.addClass(chatDiv, 'sodabox_message');
-        chatDiv.innerHTML = '<span class="sodabox_systemcontent">'+this.getNowStr()+' - '+message+'</span>';
+        this.addClass(chatDiv, 'stalk_message');
+        chatDiv.innerHTML = '<span class="stalk_systemcontent">'+this.getNowStr()+' - '+message+'</span>';
         
         div_content.appendChild(chatDiv);
         div_content.scrollTop = div_content.scrollHeight;
@@ -384,7 +384,7 @@ var SODABOX_window = {
             div_input.style.display = 'none';    
         }
         
-        document.getElementById(this.rootDivName+'_options').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return SODABOX.logout();" class="sodabox_tooltip" title="Logout from '+target+'"><img src="'+this.imageServer+'/img/logout.png"></a>';
+        document.getElementById(this.rootDivName+'_options').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return STALK.logout();" class="stalk_tooltip" title="Logout from '+target+'"><img src="'+this.imageServer+'/img/logout.png"></a>';
 
         var div_textarea = document.getElementById(this.rootDivName+'_textarea');
         div_textarea.focus();
@@ -411,7 +411,7 @@ var SODABOX_window = {
             div_input.style.display = 'none';    
         }
 
-        SODABOX_utils.delUserInfo();
+        STALK_utils.delUserInfo();
         document.getElementById(this.rootDivName+'_options').innerHTML = "";
         
         this.isLogined = false;
@@ -429,10 +429,10 @@ var SODABOX_window = {
     	}
 
     	if(this.currentSize == "MIN"){
-    		document.getElementById(this.rootDivName+'_size').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return SODABOX.sizing(\'MAX\');" class="sodabox_tooltip" title="Big Size"><img src="'+this.imageServer+'/img/max.png"></a>';
+    		document.getElementById(this.rootDivName+'_size').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return STALK.sizing(\'MAX\');" class="stalk_tooltip" title="Big Size"><img src="'+this.imageServer+'/img/max.png"></a>';
     		document.getElementById(this.rootDivName).style.width = this.divOpenWidth;
     	}else{
-    		document.getElementById(this.rootDivName+'_size').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return SODABOX.sizing(\'MIN\');" class="sodabox_tooltip" title="Small Size"><img src="'+this.imageServer+'/img/min.png"></a>';
+    		document.getElementById(this.rootDivName+'_size').innerHTML = '<a href="javascript:void(0)" onclick="javascript:return STALK.sizing(\'MIN\');" class="stalk_tooltip" title="Small Size"><img src="'+this.imageServer+'/img/min.png"></a>';
     		document.getElementById(this.rootDivName).style.width = this.divMaxOpenWidth;
     	}
     },
@@ -463,20 +463,20 @@ var SODABOX_window = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/////////////////// SODABOX Module /////////////////////////////////////////////
+/////////////////// STALK Module /////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-var SODABOX = (function(CONF, UTILS, WIN) {
+var STALK = (function(CONF, UTILS, WIN) {
 
     /*** PRIAVTE AREA ***/
 
 	var fn_init = function(){
     	console.log(" # 1. fn_init \n\t"+JSON.stringify(CONF));
-        UTILS.loadJson(CONF.httpUrl+'/node?refer='+CONF.refer, 'SODABOX.callbackInit');
+        UTILS.loadJson(CONF.httpUrl+'/node?refer='+CONF.refer, 'STALK.callbackInit');
     };
     var fn_reInit = function(){
     	console.log(" # 1. fn_init \n\t"+JSON.stringify(CONF));
-        UTILS.loadJson(CONF.httpUrl+'/node?refer='+CONF.refer, 'SODABOX.callbackSocketCallback');
+        UTILS.loadJson(CONF.httpUrl+'/node?refer='+CONF.refer, 'STALK.callbackSocketCallback');
     };
 
     var fn_callbackInit = function(data){
@@ -492,7 +492,7 @@ var SODABOX = (function(CONF, UTILS, WIN) {
 
         WIN.initWin(CONF.divName, CONF.httpUrl);
         
-        CONF.user = SODABOX_utils.getUserInfo();
+        CONF.user = STALK_utils.getUserInfo();
         //console.log("USER : "+JSON.stringify(user));
         if ( typeof CONF.user.target == "undefined") {
         	CONF.isLogined = false;
@@ -642,4 +642,4 @@ var SODABOX = (function(CONF, UTILS, WIN) {
 
     };
 
-})(SODABOX_conf, SODABOX_utils, SODABOX_window);
+})(STALK_conf, STALK_utils, STALK_window);
