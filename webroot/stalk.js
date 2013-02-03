@@ -82,24 +82,24 @@ var STALK_utils = {
     
     setUserInfo : function(userInfo)
 	{
-		var date = new Date();
-		date.setDate(date.getDate() + 10);
-		document.cookie = 'STALK=' + escape(JSON.stringify(userInfo)) + 
-		';expires=' + date.toGMTString()+';path=/';
+		//var date = new Date();
+		//date.setDate(date.getDate() + 10);
+		document.cookie = 'STALK_USER=' + escape(JSON.stringify(userInfo)) + ';path=/' 
+		//';expires=' + date.toGMTString()+';path=/';
 	},
 	
 	delUserInfo : function() {
 		var date = new Date(); 
 		var validity = -1;
 		date.setDate(date.getDate() + validity);
-		document.cookie = "STALK=;expires=" + date.toGMTString()+';path=/';
+		document.cookie = "STALK_USER=;expires=" + date.toGMTString()+';path=/';
 	},
 	getUserInfo : function() {
 		var allcookies = document.cookie;
 		var cookies = allcookies.split("; ");
 		for ( var i = 0; i < cookies.length; i++) {
 			var keyValues = cookies[i].split("=");
-			if (keyValues[0] == "STALK") {
+			if (keyValues[0] == "STALK_USER") {
 				console.log(keyValues[1]);
 				return JSON.parse(unescape(keyValues[1]));
 			}
@@ -186,12 +186,14 @@ var STALK_window = {
 		'<div id="'+rootDivName+'_title" class="stalk_title"></div><div id="'+rootDivName+'_options" class="stalk_options"></div><div id="'+rootDivName+'_size" class="stalk_options"></div><br clear="all"></div>'+
 		'<div id="'+rootDivName+'_content" class="stalk_content"></div>'+
 		'<div id="'+rootDivName+'_input" class="stalk_input"><textarea id="'+rootDivName+'_textarea" class="stalk_textarea" onkeydown="javascript:return STALK_window.inputChatMessage(event,this);" ></textarea></div>'+
-        '<div id="'+rootDivName+'_login" class="stalk_login"><span>Connect with</span> '+
+        '<div id="'+rootDivName+'_login" class="stalk_login"><span align=right>CONNECT<br/>WITH</span> '+
         '<a href="#" class="stalk_tooltip" title="login with facebook" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/facebook.png" width="30px" style="cursor:pointer;" /></a>&nbsp;'+
         '<a href="#" class="stalk_tooltip" title="login with twitter" onclick="return !window.open(STALK.getOauthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/twitter.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
         '<a href="#" class="stalk_tooltip" title="login with google" onclick="return !window.open(STALK.getOauthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/google.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
-        '</div>'
-
+        '<div id="'+rootDivName+'_info" class="stalk_info"><a href="http://www.stalk.io" target="_blank">by stalk.io</a></div>' +
+        '</div>';
+        
+        
         var div_content = document.getElementById(rootDivName+'_content');
         var div_login = document.getElementById(rootDivName+'_login');
         var div_input = document.getElementById(rootDivName+'_input');
@@ -221,6 +223,15 @@ var STALK_window = {
             div_root.style.display = 'block';
         }else{
             div_root.style.display = 'none';
+        }
+    },
+    
+    isShowRootDiv : function() {
+        var div_root = document.getElementById(this.rootDivName);
+        if(div_root.style.display == 'block'){
+            return true;
+        }else{
+        	return false;
         }
     },
     
@@ -513,7 +524,10 @@ var STALK = (function(CONF, UTILS, WIN) {
 
         	console.log(" # 2(2). callbackSocketCallback \n\t"+JSON.stringify(data));
     		if(data.status != "ok"){
-    			console.log("ERROR");
+    			// Error is occured!!
+    			if(WIN.isShowRootDiv()){
+    				WIN.setSysMessage("I'm so sorry. Traffic jam right now.<br/> Please connect again later.");
+    			}
         		return;
         	}
     		CONF.serverInfo = data;

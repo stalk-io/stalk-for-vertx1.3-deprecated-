@@ -47,6 +47,7 @@
 	border-bottom:1px solid #cccccc;
 }
 
+
 .stalk_login {
 	padding: 5px;
 	background-color: #ffffff;
@@ -58,6 +59,19 @@
 	vertical-align: middle;
 	color: #666666;
 }
+
+.stalk_info{
+}
+.stalk_info a{
+	float: right;
+	text-decoration: none;
+	padding: 5px;
+	color: #808080;
+	font-size:95%;
+}
+.stalk_info a:hover{text-decoration:underline;color:#c00;}
+
+
 .stalk_login img{
      vertical-align: middle;
 	border:none;
@@ -104,13 +118,7 @@
 	color: #808080;
 }
 
-.stalk_info {
-	margin-left:-1em;
-	color:#666666;
-	font-size:85%;
-	font-style:italic;
 
-}
 
 .stalk_messagefrom {
 	margin-left:-1em;
