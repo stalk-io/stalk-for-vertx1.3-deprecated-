@@ -26,8 +26,8 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 
 	protected boolean isOk = false;
 
-	// socketId : refer
-	private ConcurrentMap<String, String> sessionStore;
+	// socketId : refer^user
+	protected ConcurrentMap<String, String> sessionStore;
 
 
 	@Override
@@ -46,7 +46,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 		server.requestHandler(new Handler<HttpServerRequest>() {
 			public void handle(HttpServerRequest req) {
 
-				if (!req.path.startsWith("/message")){
+				if(req.path.startsWith("/status")){
+					processRequest(req);
+				}else if (!req.path.startsWith("/message")){
 					System.out.println(" *** bad request path *** "+req.path);
 					req.response.statusCode = 404;
 					req.response.end();
@@ -83,8 +85,23 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 
 		DEBUG("Message Server(%s) is started [%s:%d]", address, host, port);
 	}
+	
+	@Override
+	public void stop() {
+		try {
+			super.stop();
+			
+			JsonObject delNode = new JsonObject();
+			delNode.putString("action", NODE_WATCHER.ACTION.DEL_NODE);
+			delNode.putString("channel", channel);
+			eb.send(NODE_WATCHER.DEFAULT.ADDRESS, delNode);
+
+		} catch (Exception e) {
+		}
+	}
 
 	protected abstract Handler<Message<JsonObject>> getMessageHandler();
+	protected abstract void processRequest(HttpServerRequest req);
 
 	protected String getRefer(String str){
 		if(str.indexOf("https://") >= 0){

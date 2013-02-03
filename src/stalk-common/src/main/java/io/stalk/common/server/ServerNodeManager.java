@@ -85,6 +85,7 @@ public class ServerNodeManager extends AbstractNodeManager<ServerNode>{
 		for(String channel: nodes.getKeys()){
 			isOk = false;
 			nodes.remove(channel);
+			serverList.remove(channel);
 		}
 	}
 

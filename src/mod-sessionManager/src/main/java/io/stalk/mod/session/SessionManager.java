@@ -100,6 +100,7 @@ public class SessionManager extends BusModBase implements Handler<Message<JsonOb
 					Jedis jedis 	= this.redisPool.getResource();
 
 					try {
+						
 						String refer = message.body.getString("refer");
 
 						String[] refers = getHostUrl(refer);

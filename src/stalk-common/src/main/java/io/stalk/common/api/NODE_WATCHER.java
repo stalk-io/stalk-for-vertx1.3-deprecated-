@@ -31,6 +31,10 @@ public interface NODE_WATCHER {
 		String CREATE_NODE		= "createNode";
 		
 		String START_WATCHING	= "startWatching";
+
+		String DEL_NODE		= "delNode"; 
+
+		String INFO_CHANNEL		= "infoChannel"; 
 		
 	}
 	

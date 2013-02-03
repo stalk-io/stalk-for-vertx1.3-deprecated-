@@ -11,6 +11,7 @@ import io.stalk.common.server.zk.ZooKeeperUtils;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -112,6 +113,42 @@ public class NodeWatcher extends BusModBase implements Handler<Message<JsonObjec
 					isWatching = false;
 				}
 				sendOK(message);
+
+			}else if(NODE_WATCHER.ACTION.INFO_CHANNEL.equals(action)){ // for monitoring.
+
+				String channel = message.body.getString("channel");
+				if(StringUtils.isNotBlank(channel)){
+					try {
+						zkClient.get().delete(rootPath+"/"+channel, -1);
+						sendOK(message);
+					} catch (InterruptedException | KeeperException
+							| ZooKeeperConnectionException e) {
+						sendError(message, e.getMessage());
+					}
+					
+				}else{
+					sendError(message, "The name of channel is empty");
+				}
+
+			}else if(NODE_WATCHER.ACTION.INFO_CHANNEL.equals(action)){ // for monitoring.
+				List<String> channels = null;
+				try {
+					channels = zkClient.get().getChildren(rootPath, false);
+				} catch (KeeperException | InterruptedException
+						| ZooKeeperConnectionException e) {
+					// ERROR
+					sendError(message, e.getMessage());
+				}
+
+				if(channels != null && channels.size() > 0){
+					JsonArray chs = new JsonArray();
+					for(String channel : channels){
+						chs.addString(channel);
+					}
+					sendOK(message, new JsonObject().putArray("channels", chs));
+				}else{
+					sendError(message, "channel is not exists.");
+				}
 			}
 
 		}else{

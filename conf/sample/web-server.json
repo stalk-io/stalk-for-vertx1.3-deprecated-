@@ -53,17 +53,17 @@
 		    	"www.google.com" : {
 		    		"consumer_key": "www.sodabox.io",
 		    		"consumer_secret": "googlef85bcb23089b61f7",
-		    		"callback_url": "http://www.sodabox.io/auth/callback"
+		    		"callback_url": "http://www.stalk.io/auth/callback"
 		    	},
 		    	"twitter.com" : {
-		    		"consumer_key": "qOxMR9PbIN3AIIL1xNhwIA",
-		    		"consumer_secret": "Y0OlUN3Uz3I0nBQjF93H4Hy3wiBfKVch5Fb72REuuYg",
-		    		"callback_url": "http://www.sodabox.io/auth/callback"
+		    		"consumer_key": "vfGrasEkdP1nDiOgCfUdiQ",
+		    		"consumer_secret": "JT2NgHk6ppLrMuOaLnEfsb4JuS1p2UVfzdKIfpVplo",
+		    		"callback_url": "http://www.stalk.io/auth/callback"
 		    	},
 		    	"graph.facebook.com" : {
-		    		"consumer_key": "392955947454364",
-		    		"consumer_secret": "07f3a7d48ccaeb256529df5934777e17",
-		    		"callback_url": "http://www.sodabox.io/auth/callback"
+		    		"consumer_key": "495434500502378",
+		    		"consumer_secret": "b954990617a2a385460ca0c440d0eb9e",
+		    		"callback_url": "http://www.stalk.io/auth/callback"
 		    	}
 		    }
 		}

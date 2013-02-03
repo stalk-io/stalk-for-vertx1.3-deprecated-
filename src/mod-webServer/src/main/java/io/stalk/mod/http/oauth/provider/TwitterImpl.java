@@ -109,10 +109,12 @@ public class TwitterImpl extends AbstractProvider implements AuthProvider{
 			
 			JSONObject pObj = new JSONObject(result);
 			if (pObj.has("name")) {
-				profile.setName(pObj.getString("screen_name"));
+				profile.setName(pObj.getString("name"));
 			}
-			if (pObj.has("url")) {
-				profile.setLink("https://twitter.com/"+pObj.getString("url"));
+			if (pObj.has("screen_name")) {
+				profile.setLink("https://twitter.com/"+pObj.getString("screen_name"));
+			}else{
+				profile.setLink(pObj.getString("link"));
 			}
 			
 			return profile;

@@ -19,10 +19,10 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 	private Logger 	log;
 
 	private String address;
-	private String 	webRoot;
 	private String 	indexPage;
 	private boolean gzipFiles;
-
+	
+	protected String 	webRoot;
 	protected SocialAuthManager authManager;
 
 	@Override

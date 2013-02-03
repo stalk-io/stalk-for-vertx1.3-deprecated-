@@ -10,6 +10,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,8 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.CookieDecoder;
 import org.jboss.netty.handler.codec.http.CookieEncoder;
+import org.jboss.netty.handler.codec.http.DefaultCookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.eventbus.Message;
@@ -39,6 +43,8 @@ public class WebServer extends AbstractModule{
 		}
 	}
 
+	private String chatpopHtml = null;
+
 	@Override
 	public void handle(final HttpServerRequest req) {
 
@@ -47,18 +53,46 @@ public class WebServer extends AbstractModule{
 				System.out.println(arg0);
 			};
 		});
-		
-		System.out.println(" > "+req.path);
 
-		// server node 諛쏆븘�ㅺ린.
-		if("/node".equals(req.path)){
+		if(req.path.startsWith("/chat")){
+
+			//if(chatpopHtml == null){
+				Path file = Paths.get(webRoot + "/chatpop.html");
+				StringBuilder content;
+				try {
+					BufferedReader reader = Files.newBufferedReader(file, Charset.forName("UTF-8"));
+					content = new StringBuilder();
+					String line = null;
+					while ((line = reader.readLine()) != null) {
+						content.append(line);
+					}
+					chatpopHtml = content.toString();
+				} catch (Exception e) {
+					e.printStackTrace();
+					chatpopHtml = e.getMessage();
+				}
+			//}
+
+
+			System.out.println(chatpopHtml);
+			System.out.println("Asdfasdf");
+			System.out.println(StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject().putString("refer", req.path.substring(6)).encode()));
+			
+			req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
+
+			req.response.end(
+					StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject().putString("refer", req.path.substring(6)).encode())
+					);    
+
+
+		}else if("/node".equals(req.path)){
 
 			if(!StringUtils.isEmpty(req.params().get("refer"))){
 
 				JsonObject reqJson = new JsonObject();
 				reqJson.putString("action"	, SESSION_MANAGER.ACTION.IN);
 				reqJson.putString("refer"	, req.params().get("refer"));
-				
+
 				eb.send(SESSION_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
 					public void handle(Message<JsonObject> message) {
 
@@ -83,7 +117,7 @@ public class WebServer extends AbstractModule{
 				req.response.end("");    
 			}
 
-		}else if("/auth".equals(req.path)){ // �몄쬆 ��
+		}else if("/auth".equals(req.path)){
 
 			String target = req.params().get("target");
 
@@ -106,21 +140,20 @@ public class WebServer extends AbstractModule{
 				req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, httpCookieEncoder.encode());
 
 				req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
-				req.response.end("<script type='text/javascript'>location.href='"+requestToken.getUrl()+"';</script>");
+				req.response.end("Loading.......<br><br><br><script type='text/javascript'>location.href='"+requestToken.getUrl()+"';</script>");
 
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				// Delete Cookies
-				CookieEncoder cookieEncoder = new CookieEncoder(true);
-				req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, cookieEncoder.encode());
+				req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, getDeletedCookie());
 				req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
 				req.response.end("<html><body><h1>^^</h1><br>"+e.getMessage()+"</body></html>");
 			}
 
 
 
-		}else if("/auth/callback".equals(req.path)){ // �몄쬆 �꾨즺.
+		}else if("/auth/callback".equals(req.path)){
 
 			String value = req.headers().get(HttpHeaders.Names.COOKIE);
 			DEBUG("cookie string : %s ", value);
@@ -175,8 +208,6 @@ public class WebServer extends AbstractModule{
 					profileJson.putString("link"	, user.getLink());
 					profileJson.putString("target"	, target);
 
-					// @ TODO more !!
-
 					JsonObject jsonMessage = new JsonObject();
 					jsonMessage.putString("action"		, PUBLISH_MANAGER.ACTION.PUB);
 					jsonMessage.putString("type"		, "LOGIN");
@@ -189,8 +220,7 @@ public class WebServer extends AbstractModule{
 
 
 					// Delete Cookies
-					CookieEncoder cookieEncoder = new CookieEncoder(true);
-					req.response.headers().put(HttpHeaders.Names.SET_COOKIE, cookieEncoder.encode());
+					req.response.headers().put(HttpHeaders.Names.SET_COOKIE, getDeletedCookie());
 
 					req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE, "text/html; charset=UTF-8");
 					req.response.end("<script type='text/javascript'>window.close();</script>");
@@ -203,11 +233,10 @@ public class WebServer extends AbstractModule{
 			}else{
 
 				// Delete Cookies
-				CookieEncoder cookieEncoder = new CookieEncoder(true);
-				req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, cookieEncoder.encode());
+				req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, getDeletedCookie());
 
 				req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
-				req.response.end("<html><body><h1>^^</h1><br> Denied."+cookieEncoder.encode()+"</body></html>");
+				req.response.end("<html><body><h1>^^</h1><br> Denied."+getDeletedCookie().encode()+"</body></html>");
 
 			}
 
@@ -230,9 +259,9 @@ public class WebServer extends AbstractModule{
 						html.append(inputLine);
 					in.close();
 
-					
+
 					String baseHref = "<base href=\""+req.params().get("url")+"\">";
-					
+
 					result = 
 							html.substring(0, html.indexOf("</head>")) +
 							baseHref +
@@ -275,6 +304,15 @@ public class WebServer extends AbstractModule{
 		}
 		return json;
 
+	}
+
+	private CookieEncoder getDeletedCookie(){
+		CookieEncoder httpCookieEncoder = new CookieEncoder(true);	
+		Cookie cookie = new DefaultCookie(OAUTH_COOKIE.NAME, "");
+		cookie.setMaxAge(0);
+		httpCookieEncoder.addCookie(cookie);
+
+		return httpCookieEncoder;
 	}
 
 }

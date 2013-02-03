@@ -5,9 +5,12 @@ import io.stalk.common.api.SOCKET_SERVER;
 
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.sockjs.SockJSSocket;
 
@@ -158,6 +161,31 @@ public class SockServer extends AbstractModule {
 			}
 
 		};
+	}
+
+	@Override
+	protected void processRequest(HttpServerRequest req) {
+
+		if("/status/session/count".equals(req.path)){
+			StringBuffer returnStr = new StringBuffer("");
+			if(StringUtils.isEmpty(req.params().get("callback"))){
+				returnStr.append("{\"count\":").append(sessionStore.size()).append("}");
+			}else{
+				returnStr
+				.append(req.params().get("callback"))
+				.append("(")
+				.append("{\"count\":").append(sessionStore.size()).append("}")
+				.append(");");
+			}
+			req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "application/json; charset=UTF-8");
+			req.response.end(returnStr.toString());
+			
+		}else{
+			
+			req.response.statusCode = 404;
+			req.response.end();
+			
+		}
 	}
 
 

@@ -1,5 +1,6 @@
 package io.stalk.common.server;
 
+import io.stalk.common.server.ServerNodeManager.SERVER;
 import io.stalk.common.server.map.NodeMap;
 import io.stalk.common.server.map.NodeRegistry;
 import io.stalk.common.server.node.RedisPoolNode;
@@ -79,6 +80,7 @@ public class RedisNodeManager extends AbstractNodeManager<RedisPoolNode>{
 		String action 	= message.body.getString("action");
 		DEBUG("messageHandle : %s ", message.body);
 
+		// to be deleted!!!
 		switch (action) {
 		case "message:publish":
 
@@ -88,6 +90,11 @@ public class RedisNodeManager extends AbstractNodeManager<RedisPoolNode>{
 					));
 
 			break;   
+			
+		case SERVER.OK:
+			sendOK(message, new JsonObject().putBoolean("ok", isOk));
+			break;
+			
 		default:
 			sendError(message, "[REDIS] Invalid action: " + action);
 			return;
