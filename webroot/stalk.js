@@ -2,6 +2,7 @@ var STALK_conf = {
 	httpUrl 	: "http://www.stalk.io",
 	serverInfo 	: {},
 	divName 	: "STALK_SCREEN",
+	screenType	: "normal",
 	refer 		: "",
 	user 		: {},
 	isLogined 	: false,
@@ -164,7 +165,11 @@ var STALK_window = {
         this.rootDivName = rootDivName;
         this.imageServer = imageServer;
 		
-		STALK_utils.loadCss(this.imageServer+'/stalk.css');
+        if(STALK_conf.screenType == 'fullscreen'){
+			STALK_utils.loadCss(this.imageServer+'/stalk_fullscreen.css');
+        }else{
+			STALK_utils.loadCss(this.imageServer+'/stalk.css');
+    	}
 		
         var div_root = document.getElementById(rootDivName);
 
@@ -190,7 +195,7 @@ var STALK_window = {
         '<a href="#" class="stalk_tooltip" title="login with facebook" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/facebook.png" width="30px" style="cursor:pointer;" /></a>&nbsp;'+
         '<a href="#" class="stalk_tooltip" title="login with twitter" onclick="return !window.open(STALK.getOauthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/twitter.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
         '<a href="#" class="stalk_tooltip" title="login with google" onclick="return !window.open(STALK.getOauthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank"><img src="'+this.imageServer+'/img/google.png" width="30px"style="cursor:pointer;" /></a>&nbsp;'+
-        '<div id="'+rootDivName+'_info" class="stalk_info"><a href="http://www.stalk.io" target="_blank">by stalk.io</a></div>' +
+        //'<div id="'+rootDivName+'_info" class="stalk_info"><a href="http://www.stalk.io" target="_blank">by stalk.io</a></div>' +
         '</div>';
         
         
@@ -212,7 +217,11 @@ var STALK_window = {
         
         //div_root.style.display = 'block';
         div_root.style.display = 'none';
-        this.toggleChatBoxGrowth();
+        
+        if(STALK_conf.screenType == 'fullscreen'){
+        }else{
+        	this.toggleChatBoxGrowth();
+        }
         
 
     },
@@ -329,6 +338,8 @@ var STALK_window = {
     },
     
     toggleChatBoxGrowth : function() {
+    	
+    	if(STALK_conf.screenType == 'fullscreen') return false;
     	
     	if("OPTION_BUTTON" == this.eventType){
     		this.eventType = "";
@@ -624,11 +635,13 @@ var STALK = (function(CONF, UTILS, WIN) {
             if(data){
                 if(data.divName)    CONF.divName      = data.divName;
                 if(data.refer)     	CONF.refer        = data.refer;
+                if(data.screenType) CONF.screenType	  = data.screenType;
             }
             if(CONF.refer){}else{ 
             	return;
             }
-            fn_init();
+            // TODO ! !! ! ! !
+            //fn_init();
         },
 
         callbackInit : function(data){

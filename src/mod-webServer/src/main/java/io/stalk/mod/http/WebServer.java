@@ -54,9 +54,9 @@ public class WebServer extends AbstractModule{
 			};
 		});
 
-		if(req.path.startsWith("/chat")){
+		if(req.path.startsWith("/chat/")){
 
-			//if(chatpopHtml == null){
+			if(chatpopHtml == null || log.isDebugEnabled()){
 				Path file = Paths.get(webRoot + "/chatpop.html");
 				StringBuilder content;
 				try {
@@ -71,18 +71,15 @@ public class WebServer extends AbstractModule{
 					e.printStackTrace();
 					chatpopHtml = e.getMessage();
 				}
-			//}
+			}
 
-
-			System.out.println(chatpopHtml);
-			System.out.println("Asdfasdf");
-			System.out.println(StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject().putString("refer", req.path.substring(6)).encode()));
-			
 			req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
 
 			req.response.end(
-					StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject().putString("refer", req.path.substring(6)).encode())
-					);    
+					StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject()
+					.putString("refer", req.path.substring(6))
+					.encode())
+					);
 
 
 		}else if("/node".equals(req.path)){

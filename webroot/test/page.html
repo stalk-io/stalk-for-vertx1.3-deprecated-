@@ -1,24 +1,70 @@
-<html>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
 <head>
-<title>sodabox test page</title>
+  <meta charset="utf-8" />
+  <title>stalk.io chat popup</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="../ico/favicon.ico">
 </head>
 <body>
-	<br> TEST
-	<br>
+<div id="STALK_CHATPOP" class="stalk" style="width: 100%;height: 100%;display: block;">
+</div>
 
-	<script type="text/javascript"
-		src="../stalk.js" charset="utf-8"></script>
+<script type="text/javascript" src="../stalk.js" charset="utf-8"></script>
+<script language="javascript">
 
-	<script language="javascript">
-		STALK_window.initWin('SODABOX', '..');
-		STALK_window.showRootDiv(true);
-		STALK_window.setTitleMessage("ONLINE 3");
-		STALK_window.setSysMessage("John Kim is logined.");
-		STALK_window.setSysMessage("John Kim is SODABOX_window.");
-		STALK_window.setSysMessage("John Kim is logined.");
-		STALK_window.setSysMessage("John Kim is logined.");
-		STALK_window.setSysMessage("John Kim is logined.");
-	</script>
+	window.onresize = function(event) {
+	    console.log(event);
+	}
 
+	var conf = {"refer": "12345-54321-23456-3333"};
+	conf.screenType = "fullscreen";
+	conf.divName 	= "STALK_CHATPOP";
+
+	STALK.init(conf);
+	
+	STALK_window.initWin(conf.divName, '..');
+	STALK_window.showRootDiv(true);
+	STALK_window.setTitleMessage("ONLINE 3");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_window.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_window.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_window.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_window.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_windon Kim is SODABOX_");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is logined.");
+	STALK_window.setSysMessage("John Kim is SODABOX_window.");
+	STALK_window.setSysMessage("John Kim is logined.1");
+	STALK_window.setSysMessage("John Kim is logined.2");
+	STALK_window.setSysMessage("John Kim is logined.3");
+	
+</script>
 </body>
 </html>

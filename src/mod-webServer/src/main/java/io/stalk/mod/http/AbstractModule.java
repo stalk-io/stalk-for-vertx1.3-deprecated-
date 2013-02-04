@@ -16,11 +16,11 @@ import org.vertx.java.core.logging.Logger;
 
 public abstract class AbstractModule extends BusModBase implements Handler<HttpServerRequest>{
 
-	private Logger 	log;
+	protected Logger 	log;
 
-	private String address;
-	private String 	indexPage;
-	private boolean gzipFiles;
+	protected String address;
+	protected String 	indexPage;
+	protected boolean gzipFiles;
 	
 	protected String 	webRoot;
 	protected SocialAuthManager authManager;
