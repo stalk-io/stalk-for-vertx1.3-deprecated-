@@ -1,0 +1,4 @@
+{
+  "main": "io.stalk.mod.mail.MailSender",
+  "worker": true
+}

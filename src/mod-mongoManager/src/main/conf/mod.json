@@ -1,0 +1,4 @@
+{
+  "main": "io.stalk.mod.mongo.MongoManager",
+  "worker": true
+}
