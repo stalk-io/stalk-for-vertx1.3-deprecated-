@@ -18,9 +18,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 
 	protected Logger 	log;
 
-	protected String address;
+	protected String 	address;
 	protected String 	indexPage;
-	protected boolean gzipFiles;
+	protected boolean 	gzipFiles;
 	
 	protected String 	webRoot;
 	protected SocialAuthManager authManager;

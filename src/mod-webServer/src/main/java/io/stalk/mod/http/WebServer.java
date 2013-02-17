@@ -1,5 +1,6 @@
 package io.stalk.mod.http;
 
+import io.stalk.common.api.MONGO_MANAGER;
 import io.stalk.common.api.PUBLISH_MANAGER;
 import io.stalk.common.api.SESSION_MANAGER;
 import io.stalk.mod.http.oauth.Profile;
@@ -54,7 +55,59 @@ public class WebServer extends AbstractModule{
 			};
 		});
 
-		if(req.path.startsWith("/chat/")){
+		if(req.path.startsWith("/user")){
+			
+			if(req.path.startsWith("/user/new")){
+				
+				JsonObject reqJson = new JsonObject();
+				reqJson.putString("action"		, MONGO_MANAGER.ACTION.NEW);
+				reqJson.putString("email"		, req.params().get("email"));
+				reqJson.putString("password"	, req.params().get("password"));
+				
+				eb.send(MONGO_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
+					public void handle(Message<JsonObject> message) {
+
+						if("ok".equals(message.body.getString("status"))){
+							req.response.sendFile(webRoot+"/user/new.html?key="+message.body.getString("key"));	
+						}else{
+							req.response.sendFile(webRoot+"/user/error.html?m="+message.body.getString("message"));
+						}
+					}
+					
+				});
+				
+			}else if(req.path.startsWith("/user/auth/")){
+				
+				String str = req.path.substring(12);
+				
+				int i = str.indexOf("/");
+				String id = str.substring(0, i);
+				String auth = str.substring(i);
+				
+				JsonObject reqJson = new JsonObject();
+				reqJson.putString("action"	, MONGO_MANAGER.ACTION.AUTH);
+				reqJson.putString("id"		, id);
+				reqJson.putString("auth"	, auth);
+				
+				eb.send(MONGO_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
+					public void handle(Message<JsonObject> message) {
+
+						String status = message.body.getString("status");
+						if("error".equals(status)){
+							req.response.sendFile(webRoot+"/user/error.html?m="+message.body.getString("message"));
+						}else{
+							req.response.sendFile(webRoot+"/user/auth.html?key="+message.body.getString("key"));
+						}
+					}
+				});
+			}else if(req.path.startsWith("/user/info/")){
+				
+				
+			}
+			
+			
+			
+		}else if(req.path.startsWith("/chat/")){
 
 			if(chatpopHtml == null || log.isDebugEnabled()){
 				Path file = Paths.get(webRoot + "/chatpop.html");

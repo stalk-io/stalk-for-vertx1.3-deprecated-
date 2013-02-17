@@ -1,5 +1,7 @@
 package io.stalk.mod.mail;
 
+import io.stalk.common.api.MailSenderConfig;
+
 import java.util.Date;
 import java.util.Properties;
 
@@ -11,56 +13,41 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang.StringUtils;
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 public class MailSender extends BusModBase implements Handler<Message<JsonObject>> {
 
+	private MailSenderConfig moduleConfig;
+
 	private Session 	session;
 	private Transport 	transport;
-
-	private String 		address;
-	private boolean 	ssl;
-	private String 		host;
-	private int 		port;
-	private boolean 	auth;
-	private String 		username;
-	private String 		password;
-	private String 		contentType;
 
 	@Override
 	public void start() {
 		super.start();
-		address 	= getOptionalStringConfig("address", "vertx.mailer");
-		ssl 		= getOptionalBooleanConfig("ssl", false);
-		host 		= getOptionalStringConfig("host", "localhost");
-		port 		= getOptionalIntConfig("port", 25);
-		auth 		= getOptionalBooleanConfig("auth", false);
-		username 	= getOptionalStringConfig("username", null);
-		password 	= getOptionalStringConfig("password", null);
-		contentType = getOptionalStringConfig("content_type", "text/plain");
 
-		eb.registerHandler(address, this);
+		moduleConfig = new MailSenderConfig(config);
 
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.host", host);
-		props.put("mail.smtp.socketFactory.port", Integer.toString(port));
-		if (ssl) {
+		props.put("mail.smtp.host", moduleConfig.getHost());
+		props.put("mail.smtp.socketFactory.port", Integer.toString(moduleConfig.getPort()));
+		if (moduleConfig.isSsl()) {
 			props.put("mail.smtp.socketFactory.class",
 					"javax.net.ssl.SSLSocketFactory");
 		}
 		props.put("mail.smtp.socketFactory.fallback", Boolean.toString(false));
-		props.put("mail.smtp.auth", Boolean.toString(auth));
+		props.put("mail.smtp.auth", Boolean.toString(moduleConfig.isAuth()));
 		//props.put("mail.smtp.quitwait", "false");
 
 		session = Session.getInstance(props,
 				new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(moduleConfig.getUsername(), moduleConfig.getPassword());
 			}
 		});
 		//session.setDebug(true);
@@ -71,6 +58,9 @@ public class MailSender extends BusModBase implements Handler<Message<JsonObject
 		} catch (MessagingException e) {
 			logger.error("Failed to setup mail transport", e);
 		}
+
+		eb.registerHandler(moduleConfig.getAddress(), this);
+
 	}
 
 	@Override
@@ -82,72 +72,52 @@ public class MailSender extends BusModBase implements Handler<Message<JsonObject
 		}
 	}
 
-	private InternetAddress[] parseAddresses(Message<JsonObject> message, String fieldName,
-			boolean required)
-	{
-		Object oto = message.body.getField(fieldName);
-		if (oto == null) {
-			if (required) {
-				sendError(message, fieldName + " address(es) must be specified");
-			}
-			return null;
-		}
-		try {
-			InternetAddress[] addresses = null;
-			if (oto instanceof String) {
-				addresses = InternetAddress.parse((String)oto, true);
-			} else if (oto instanceof JsonArray) {
-				JsonArray loto = (JsonArray)oto;
-				addresses = new InternetAddress[loto.size()];
-				int count = 0;
-				for (Object addr: loto) {
-					if (addr instanceof String == false) {
-						sendError(message, "Invalid " + fieldName + " field");
-						return null;
-					}
-					InternetAddress[] ia = InternetAddress.parse((String)addr, true);
-					addresses[count++] = ia[0];
-				}
-			}
-			return addresses;
-		} catch (AddressException e) {
-			sendError(message, "Invalid " + fieldName + " field");
-			return null;
-		}
-	}
-
 	@Override
 	public void handle(Message<JsonObject> message) {
 
-		String from = message.body.getString("from");
+		String fromEmail 	= moduleConfig.getFromEmail();
+		String id 			= message.body.getString("id");
+		String toEmail 		= message.body.getString("email");
+		String authCode		= message.body.getString("auth");
 
-		if (from == null) {
+		if (fromEmail == null) {
 			sendError(message, "from address must be specified");
 			return;
 		}
-
 		InternetAddress fromAddress;
 		try {
-			fromAddress = new InternetAddress(from, true);
+			fromAddress = new InternetAddress(fromEmail, true);
 		} catch (AddressException e) {
-			sendError(message, "Invalid from address: " + from, e);
+			sendError(message, "Invalid from address: " + fromEmail, e);
+			return;
+		}
+		
+		if (toEmail == null) {
+			sendError(message, "to address must be specified");
+			return;
+		}
+		InternetAddress[] toAddress;
+		try {
+			toAddress = InternetAddress.parse(toEmail, true);
+		} catch (AddressException e) {
+			sendError(message, "Invalid to address: " + toEmail, e);
 			return;
 		}
 
-		InternetAddress[] recipients = parseAddresses(message, "to", true);
-		if (recipients == null) {
+
+		if (authCode == null) {
+			sendError(message, "an auth code must be specified");
 			return;
 		}
-		InternetAddress[] cc = parseAddresses(message, "cc", false);
-		InternetAddress[] bcc = parseAddresses(message, "bcc", false);
-
-		String subject = message.body.getString("subject");
-		if (subject == null) {
+		
+		String subject = moduleConfig.getTitle();
+		if (StringUtils.isEmpty(subject)) {
 			sendError(message, "subject must be specified");
 			return;
 		}
-		String body = message.body.getString("body");
-		if (body == null) {
+
+		String body = StringUtils.replace(moduleConfig.getContent(), "#LINK_PATH#", id+"/"+authCode);
+		if ( StringUtils.isEmpty(body)) {
 			sendError(message, "body must be specified");
 			return;
 		}
@@ -155,19 +125,18 @@ public class MailSender extends BusModBase implements Handler<Message<JsonObject
 		javax.mail.Message msg = new MimeMessage(session);
 
 		try {
+
 			msg.setFrom(fromAddress);
-			msg.setRecipients(javax.mail.Message.RecipientType.TO, recipients);
-			msg.setRecipients(javax.mail.Message.RecipientType.CC, cc);
-			msg.setRecipients(javax.mail.Message.RecipientType.BCC, bcc);
+			msg.setRecipients(javax.mail.Message.RecipientType.TO, toAddress);
 			msg.setSubject(subject);
-			msg.setContent(body, contentType);
+			msg.setContent(body, moduleConfig.getContentType());
 			msg.setSentDate(new Date());
 			transport.send(msg);
 
 			sendOK(message);
 
 		} catch (MessagingException e) {
-
+			e.printStackTrace();
 			sendError(message, "Failed to send message", e);
 		} catch (Throwable t) {
 			t.printStackTrace();

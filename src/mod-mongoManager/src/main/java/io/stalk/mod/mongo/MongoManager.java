@@ -1,16 +1,23 @@
 package io.stalk.mod.mongo;
 
+import io.stalk.common.api.MAIL_SENDER;
+import io.stalk.common.api.MONGO_MANAGER;
+import io.stalk.common.api.MongoManagerConfig;
 import io.stalk.common.utils.BijectiveUtils;
+import io.stalk.common.utils.PasswordUtils;
 
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -21,13 +28,7 @@ import com.mongodb.util.JSON;
 
 public class MongoManager extends BusModBase implements Handler<Message<JsonObject>> {
 
-	private String address;
-	private String host;
-	private int port;
-	private String dbName;
-	private String username;
-	private String password;
-	private String collection;
+	private MongoManagerConfig moduleConfig;
 
 	private Mongo mongo;
 	private DB db;
@@ -37,23 +38,30 @@ public class MongoManager extends BusModBase implements Handler<Message<JsonObje
 	public void start() {
 		super.start();
 
-		address = getOptionalStringConfig("address", "vertx.mongopersistor");
-		host = getOptionalStringConfig("host", "localhost");
-		port = getOptionalIntConfig("port", 27017);
-		dbName = getOptionalStringConfig("db_name", "default_db");
-		username = getOptionalStringConfig("username", null);
-		password = getOptionalStringConfig("password", null);
-		collection = getOptionalStringConfig("collection", "users");
+		moduleConfig = new MongoManagerConfig(config);
 
 		try {
-			mongo = new Mongo(host, port);
-			db = mongo.getDB(dbName);
-			if (username != null && password != null) {
-				db.authenticate(username, password.toCharArray());
-			}
-			dbCollection = db.getCollection(collection);
+			mongo = new Mongo(
+					moduleConfig.getServer().getHost(), 
+					moduleConfig.getServer().getPort()
+					);
 
-			eb.registerHandler(address, this);
+			db = mongo.getDB(moduleConfig.getDbName());
+
+			if (
+					moduleConfig.getServer().getUsername() != null && 
+					moduleConfig.getServer().getPassword() != null) {
+
+				db.authenticate(
+						moduleConfig.getServer().getUsername(), 
+						moduleConfig.getServer().getPassword().toCharArray());
+
+			}
+
+			dbCollection = db.getCollection(moduleConfig.getCollection());
+
+			eb.registerHandler(moduleConfig.getAddress(), this);
+
 		} catch (UnknownHostException e) {
 			logger.error("Failed to connect to mongo server", e);
 		}
@@ -75,52 +83,53 @@ public class MongoManager extends BusModBase implements Handler<Message<JsonObje
 		}
 
 		switch (action) {
-		case "save":
-			doSave(message);
+		case MONGO_MANAGER.ACTION.NEW:
+			doNew(message);
 			break;
-		case "update":
-			doUpdate(message);
+		case MONGO_MANAGER.ACTION.AUTH:
+			doAuth(message);
 			break;    
-		case "find":
-			doFind(message);
-			break;
-		case "findone":
-			doFindOne(message);
-			break;
-		case "delete":
-			doDelete(message);
-			break;
-		case "count":
-			doCount(message);
-			break;
-		case "getCollections":
-			getCollections(message);
-			break;
-		case "collectionStats":
-			getCollectionStats(message);
-			break;
-		case "command":
-			runCommand(message);
 		default:
 			sendError(message, "Invalid action: " + action);
 			return;
 		}
+
 	}
 
-	private void createUser(Message<JsonObject> message) {
+	private void doNew(Message<JsonObject> message) {
 
-		int seq = getSeq("user_email");
+		String email 	= message.body.getString("email");
+		String name 	= message.body.getString("name");
+		String password = message.body.getString("password");
 
+		int seq = getSeq("user");
 		String key = BijectiveUtils.encode(seq);
 
-		WriteConcern writeConcern = WriteConcern.valueOf(getOptionalStringConfig("writeConcern",""));
-		if (writeConcern == null) writeConcern = db.getWriteConcern();
-		
-		JsonObject doc = getMandatoryObject("document", message);
-		
-		DBObject obj = jsonToDBObject(doc);
-		WriteResult res = dbCollection.save(obj, writeConcern);
+		// insert !!
+		JsonObject user = new JsonObject();
+		user.putString("_id"		, key);
+		user.putString("email"		, email);
+		user.putString("name"		, name);
+		user.putString("password"	, PasswordUtils.encrypt(password));
+
+		DBObject obj = (DBObject)JSON.parse(user.encode());
+		WriteResult res = dbCollection.save(obj);
+
 		if (res.getError() == null) {
+
+			// send mail !!
+			JsonObject mailSender = new JsonObject();
+			mailSender.putString("email", email);
+			mailSender.putString("name"	, name);
+			mailSender.putString("id"	, key);
+			mailSender.putString("auth"	, RandomStringUtils.randomAlphabetic(10));
+
+			eb.send(MAIL_SENDER.DEFAULT.ADDRESS, mailSender, new Handler<Message<JsonObject>>() {
+				public void handle(Message<JsonObject> msg) {
+					System.out.println(msg.body.encode());
+				}
+			});
+
 			JsonObject reply = new JsonObject();
 			reply.putString("key", key);
 			sendOK(message, reply);
@@ -128,51 +137,75 @@ public class MongoManager extends BusModBase implements Handler<Message<JsonObje
 			sendError(message, res.getError());
 		}
 
+
 	}
 
-	private void updateUser(Message<JsonObject> message) {
+	private void doAuth(Message<JsonObject> message) {
+
+		String id 	= message.body.getString("id");
+		String auth = message.body.getString("auth");
+
+		JsonObject user = findOne("_id", id);
 		
-		
-		
+		if(user != null){
+			String a = user.getString("auth");
+			if(!StringUtils.isEmpty(a) && a.equals(auth)){
+
+				DBObject query = new BasicDBObject();
+				query.put("_id", id);
+
+				DBObject change = new BasicDBObject("use", true);
+				DBObject update = new BasicDBObject("$set", change);
+
+				WriteResult res = dbCollection.update(query, update);
+				
+				if (res.getError() == null) {
+					sendOK(message);
+				} else {
+					// res.getError()
+					sendError(message, MONGO_MANAGER.ERR.INTERNAL);
+				}
+				
+			}else{
+				sendError(message, MONGO_MANAGER.ERR.NOT_VALID_CODE);
+			}
+		}else{
+			sendError(message, MONGO_MANAGER.ERR.NOT_EXISTED);
+		}
+
 	}
 
-	private void doSave(Message<JsonObject> message) {
+
+	private void getCollectionStats(Message<JsonObject> message) {
 		String collection = getMandatoryString("collection", message);
+
 		if (collection == null) {
 			return;
 		}
-		JsonObject doc = getMandatoryObject("document", message);
-		if (doc == null) {
-			return;
-		}
-		String genID;
-		if (doc.getField("_id") == null) {
-			genID = UUID.randomUUID().toString();
-			doc.putString("_id", genID);
-		} else {
-			genID = null;
-		}
+
 		DBCollection coll = db.getCollection(collection);
-		DBObject obj = jsonToDBObject(doc);
-		WriteConcern writeConcern = WriteConcern.valueOf(getOptionalStringConfig("writeConcern",""));
-		if (writeConcern == null) {
-			writeConcern = db.getWriteConcern();
-		}
-		WriteResult res = coll.save(obj, writeConcern);
-		if (res.getError() == null) {
-			if (genID != null) {
-				JsonObject reply = new JsonObject();
-				reply.putString("_id", genID);
-				sendOK(message, reply);
-			} else {
-				sendOK(message);
-			}
-		} else {
-			sendError(message, res.getError());
-		}
+		CommandResult stats = coll.getStats();
+
+		JsonObject reply = new JsonObject();
+		reply.putObject("stats", new JsonObject(stats.toString()));
+		sendOK(message, reply);
+
 	}
 
 
+	private JsonObject findOne(String col, String value) {
+
+		DBObject query = new BasicDBObject(col, value);
+		DBObject res = dbCollection.findOne(null, query);
+
+		if (res != null) {
+			String s = res.toString();
+			JsonObject m = new JsonObject(s);
+			return m;
+		}else{
+			return null;
+		}
+	}
 
 
 	private int getSeq(String seqName) {
@@ -190,10 +223,5 @@ public class MongoManager extends BusModBase implements Handler<Message<JsonObje
 		DBObject res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
 		return Integer.parseInt(res.get(sequence_field).toString());
 	}
-	
-	private DBObject jsonToDBObject(JsonObject object) {
-		String str = object.encode();
-		return (DBObject)JSON.parse(str);
-	}
-	
+
 }

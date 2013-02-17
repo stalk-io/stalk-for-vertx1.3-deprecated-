@@ -641,7 +641,7 @@ var STALK = (function(CONF, UTILS, WIN) {
             	return;
             }
             // TODO ! !! ! ! !
-            //fn_init();
+            fn_init();
         },
 
         callbackInit : function(data){
