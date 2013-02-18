@@ -51,7 +51,7 @@ public class WebServer extends AbstractModule{
 
 		req.bodyHandler(new Handler<Buffer>(){
 			public void handle(Buffer arg0) {
-				System.out.println(arg0);
+				System.out.println("----------------------"+ arg0);
 			};
 		});
 

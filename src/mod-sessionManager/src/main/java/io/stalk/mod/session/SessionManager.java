@@ -115,7 +115,8 @@ public class SessionManager extends BusModBase implements Handler<Message<JsonOb
 							
 							serverNode = serverNodeManager.getNode(refer);
 
-							DEBUG(" ACTION[in] (Not Existed in Session Storage) - %s", serverNode.getChannel());
+							DEBUG(" ACTION[in] (Not Existed in Session Storage) - %s - %s:%s"
+									, serverNode.getChannel(), key, field);
 							
 							jedis.hset(key, field, serverNode.getChannel()+"^0"); // init channel and count '0'
 
@@ -130,10 +131,12 @@ public class SessionManager extends BusModBase implements Handler<Message<JsonOb
 
 								// delete session info.
 								jedis.hdel(key, field);
-
-								DEBUG(" ACTION[in] (CRUSHED!!! retry to get new Node)");
 								
 								serverNode = serverNodeManager.getNode(refer);
+
+								DEBUG(" ACTION[in] (CRUSHED!!! retry to get new Node) - %s - %s:%s"
+									, serverNode.getChannel(), key, field);
+								
 								if(serverNode != null) jedis.hset(key, field, serverNode.getChannel()+"^0"); //channel and count '0'
 
 							}

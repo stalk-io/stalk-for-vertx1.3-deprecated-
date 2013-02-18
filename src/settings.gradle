@@ -1,2 +1,2 @@
 rootProject.name = 'stalk'
-include "stalk-starter", "stalk-common", "mod-nodeWatcher", "mod-sessionManager", "mod-publishManager", "mod-subRedis", "mod-socketServer", "mod-webServer", "mod-mongoManager", "mod-mailSender"
+include "stalk-starter", "stalk-common", "mod-nodeWatcher", "mod-sessionManager", "mod-publishManager", "mod-subRedis", "mod-socketServer", "mod-webServer", "mod-sessionMonitor", "mod-monitorServer" /* , mod-mongoManager", "mod-mailSender" */
