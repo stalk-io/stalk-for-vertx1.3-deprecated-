@@ -172,6 +172,8 @@ public class SessionManager extends BusModBase implements Handler<Message<JsonOb
 
 				Jedis jedis = this.redisPool.getResource();
 
+				System.out.println("UPDATE ***** R["+refer+", "+refers[0]+"/"+refers[1]+" ] C["+ count +"]");
+				
 				try {
 					if(count > 0){
 

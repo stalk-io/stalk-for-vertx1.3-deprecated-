@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
+<head>
+  <!-- ================ Basic Page Needs ================ -->
+  <meta charset="utf-8" />
+  <title>stalk.io, social live chat service for your web pages</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">-->
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- ================ CSS ============================ -->
+
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.css">
+  <link rel="stylesheet" href="css/prettify.css">
+  <link rel="stylesheet" href="css/font-awesome.css">
+  <link rel="stylesheet" href="css/animate-custom.css">
+  <link rel="stylesheet" href="css/site.css">
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="css/font-awesome-ie7.min.css">
+  <![endif]-->
+  
+	<style type="text/css">
+		.chart-holder {
+		    width: 100%;
+		    height: 150px;
+		}
+		
+	</style>
+
+  <link rel="shortcut icon" href="ico/favicon.ico">
+</head>
+
+<body data-spy="scroll" data-target=".navbar">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#"><i class="icon-comment"></i> STALK.IO</a>
+      <ul class="nav">
+    <li><a href="#what"><i class="icon-lightbulb"></i> What is it ?</a></li>
+        <li><a href="#features"><i class="icon-ok"></i> Features</a></li>
+        <li><a href="#install"><i class="icon-wrench"></i> How to install ?</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+	<section id="chart-line">
+		<div class="row">
+			<div class="12">
+				<div id="line-chart" class="chart-holder"></div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<footer id="footer">
+  <div class="container">
+  </div>
+</footer>
+
+<script src="js/jquery-1.9.0.min.js"></script>
+<script src="js/prettify.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script language="javascript">
+	$(function() {
+		window.prettyPrint && prettyPrint();
+	});
+</script>
+
+<!-- SODABOX start -->
+<script src="js/jquery.flot.js"></script>
+<script src="js/jquery.flot.time.js"></script>
+<script language="javascript">
+
+var linechart;
+var linechartDt = [];
+
+function getURLParameter(name) {
+	
+	var u = decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+	
+	if(u){
+		if(u.indexOf('://') >= 0){
+			return u.substr(u.indexOf('://')+3);
+		}else{
+			return u
+		}
+	}else{
+		return false;
+	}
+	
+}
+
+function reloadPage(){
+	
+	var data = {
+			site: "www.stalk.io",
+			count: 5,
+			data: [
+					"/,CH01^3",
+					"/test.html,CH01^9",
+					"/test1.html,CH01^3",
+					"/test2.html,CH01^11",
+					"/test3.html,CH01^1",
+					"/test4.html,CH01^1",
+					"/test5.html,CH01^12",
+					"/test6.html,CH01^1",
+					"/test7.html,CH01^4",
+					"/test8.html,CH01^1",
+					"/test9.html,CH01^1",
+					"/test0.html,CH01^5",
+					"/test11.html,CH01^7",
+					"/test12.html,CH01^44",
+					"/test13.html,CH01^1",
+					"/test24.html,CH01^2"
+				],
+			status: "ok"
+			};
+	
+	// @ TODO ajax !!!
+	drawLineChart(data.count);
+	
+	setTimeout("reloadPage()",1000*3);
+	
+}
+
+function drawLineChart(c){
+
+	var el = $('#line-chart');
+
+    if (el.length) {
+    	
+    	if(linechartDt.length > 20){
+    		linechartDt.shift(); 
+    	}
+    	
+    	linechartDt.push([new Date().getTime(), c]);
+    	
+    	linechart.setData([linechartDt]);
+    	linechart.setupGrid();
+		linechart.draw();
+    }
+}
+
+$(function() {
+
+	
+	console.log(getURLParameter('site'));
+    var dt = [[new Date().getTime(), 0]]
+
+    var data = [{
+        data: dt,
+        label: 'connections',
+        points: {
+            show: false
+        },
+        lines: {
+            lineWidth: 2,
+            fill: false
+        }
+    }];
+
+    var options = {
+            colors: ['#94BA65', '#2B4E72', '#2790B0', '#777', '#555', '#999', '#bbb', '#ccc', '#eee'],
+            series: {
+                lines: {
+                    show: true,
+                    fill: true,
+                    lineWidth: 4,
+                    steps: false,
+                    fillColor: {
+                        colors: [{
+                            opacity: 0.4
+                        }, {
+                            opacity: 0
+                        }]
+                    }
+                },
+                points: {
+                    show: true,
+                    radius: 4,
+                    fill: true
+                }
+            },
+            legend: {
+                position: 'ne'
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: '%s: %y'
+            },
+            xaxis: {
+                mode: "time"
+            },
+            grid: {
+                borderWidth: 2,
+                hoverable: true
+            }
+        };
+
+        var el = $('#line-chart');
+
+        if (el.length) {
+        	linechart = $.plot(el, data, options);
+        	
+        }
+        reloadPage();
+
+});
+</script>
+<!-- SODABOX end -->
+</body>
+</html>
