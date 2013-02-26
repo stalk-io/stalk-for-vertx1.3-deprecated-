@@ -1,0 +1,121 @@
+
+html {
+    min-height: 100%;
+    background: #C07B3A url('../img/bg.jpg') 100% 100% no-repeat;
+    /*background: url('../img/arrow.png') fixed no-repeat bottom right, #C07B3A url('../img/bg.jpg') 100% 100% no-repeat; */
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    min-height: 100%;
+    font: 20px/1.4 'PT Sans', sans-serif;
+    color: rgba(199, 195, 195, 0.70);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.66);
+    background: transparent;
+}
+
+.modal {
+    color: #333333;
+    background-color: #ffffff;
+    text-shadow: none;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.modal .modal-header {}
+
+/*
+    Text elements
+=================================================================*/
+
+.heading {
+    margin-top: 100px;
+    margin-bottom: 30px;
+    font-size: 64px;
+    line-height: 64px;
+    font-weight: bold;
+    color: #62c462;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.description {
+    margin-bottom: 40px;
+}
+
+.desc-url {
+    margin-left: 20px;   
+}
+
+.arrow {
+    position: fixed;
+    position:expression("absolute");
+    width: 300px;
+    display:none;
+    font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+    font-size:11px;
+    z-index:9999;
+}
+
+
+/*
+    Responsiveness
+=================================================================*/
+
+@media (max-width: 979px) {
+    html {
+        background: #C07B3A url('../img/bg.jpg') 100% 100% no-repeat;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+}
+
+@media (max-width: 767px) {
+    .site-heading {
+        margin-top: 25px;
+    }
+
+    input.subscribe-email {
+        width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .subscribe-form {
+        display: block;
+    }
+
+    input.subscribe-email,
+    .subscribe-submit {
+        width: 100%;
+    }
+
+    input.subscribe-email {
+        float: none;
+        -webkit-border-radius: 27px;
+        border-radius: 27px;
+    }
+
+    .subscribe-submit-container,
+    input.subscribe-email:focus + .subscribe-submit-container {
+        width: 100%;
+        padding: 0;
+        margin-top: 15px;
+        float: none;
+        position: static;
+        background: transparent;
+        border: 0;
+    }
+
+    input.subscribe-email:focus:invalid + .subscribe-submit-container {
+        padding: 0;
+        border: 0;
+    }
+
+    .countdown-item {
+        width: 50%;
+        margin-right: 0;
+        text-align: center;
+    }
+}

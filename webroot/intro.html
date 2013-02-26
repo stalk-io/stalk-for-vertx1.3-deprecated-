@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>stalk.io - a social web chat service for your web pages.</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    	<meta name="description" content="">
+    	<meta name="author" content="John Kim, yohany@gmail.com">
+    
+        <link href="http://fonts.googleapis.com/css?family=PT+Sans:700,400&subset=cyrillic" rel="stylesheet">
+	    <link href="css/bootstrap.min.css" 				rel="stylesheet">
+	    <link href="css/bootstrap-responsive.min.css" 	rel="stylesheet">
+        <link href="css/intro.css" 					    rel="stylesheet">
+  		<link href="css/prettify.css"				    rel="stylesheet">
+  		
+    </head>
+
+    <body>
+        <div class="container">
+            <h1 class="heading">Stalk.io</h1>
+            <h3>a social web chat service for your web pages.</h3>
+
+            <p class="description">
+            	<b>Just insert some tags in your HTML pages.</b><br>
+            	<b>It only takes a minute.</b><br>
+                <p><a href="#installModal" role="button" class="btn btn-large btn-success" data-toggle="modal">How to install this on your web pages ? click this !!</a></p>
+                <br><br>
+
+                <div class="desc-url">
+                    If you already set up this on your web page, <br> 
+                    Move to the Dashboard page. <br>
+                    <div class="input-append">
+                      <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
+                      <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
+                    </div>
+                </div>
+ 
+                <!-- Modal -->
+                <div id="installModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="installModalLabel" aria-hidden="true">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="installModalLabel">How to install ? </h3>
+                  </div>
+                  <div class="modal-body">
+                    <p>Put the tags and the javascript codes before the last <code>&lt;/body&gt;</code> tag in your HTML page</p>
+<pre class="prettyprint linenums">&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.stalk.io/stalk.js&quot; charset=&quot;utf-8&quot; &gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot;&gt;
+   STALK.init();
+&lt;/script&gt;</pre>
+                    <p>That's it! :)</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                  </div>
+                </div>
+            <p>
+            
+        </div>
+
+        <div style='position:fixed; position:expression("absolute"); bottom:30px; right:150px; z-index: 9;'>
+            <img src="img/arrow.png" />
+        </div>
+
+        <script src="js/jquery-1.9.0.min.js"></script>
+        <script src="js/intro.js"></script>
+        <script src="js/prettify.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script language="javascript">
+			$(function() {
+				
+				window.prettyPrint && prettyPrint();
+				
+				$("#btnDashboard").on('click', function () {
+					$(location).attr('href', 'dashboard.html?site='+$("#urlDashboard").val());
+				});
+				
+			});
+		</script>
+    </body>
+</html>
