@@ -29,7 +29,7 @@
 
 			<div class="row">
 				<div class="span12" id="title">
-					<h2 class="title text-success" id="pageTitle"></h2>
+					<h3 class="title text-success" id="pageTitle"></h3>
 				</div>
 			</div>
 			
@@ -118,10 +118,17 @@
 			dd = dd + 1
 		}
 		
-		function getUrlTitle(u){
+		function getUrlTitle(u, c){
+
+			if(c == "null"){
+				c = "";
+			}else{
+				c = "and charset = '"+c+"'";
+			}
+	    	
+			var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+u+"' "+c+" and xpath = '//title'") + '&format=json';
+	    	
 			
-			var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+(u)+"' and xpath = '//title'") + '&format=json';
-	    	console.log(yql);
 	    	$.ajax({
 	    		url: yql,
 	    		data: {},
@@ -159,13 +166,16 @@
 		}
 		
 		$(function() {
+
+			var s = getURLParameter("site");
+			var charset = getURLParameter("charset");
+			$('#pageTitle').html(s);
+			
 	       	window.prettyPrint && prettyPrint();
 	    	LineChart.init('lineChart');
-			PageList.init('pageList', 'http://news.chosun.com' );
+			PageList.init('pageList', 'http://news.chosun.com', charset );
 			
-			var s = getURLParameter("site");
-			$('#pageTitle').html(s);
-			getUrlTitle(s);
+			getUrlTitle(s, charset);
 			
 		    reloadPage();
 		})

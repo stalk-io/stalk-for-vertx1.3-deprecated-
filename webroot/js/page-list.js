@@ -5,6 +5,7 @@ var PageList = function() {
 	var isStarted = false;
 	var beforePageList = [];
 	var siteUrl = "";
+	var charsetQuery = "";
 	
     return {
     	init: init,
@@ -12,9 +13,17 @@ var PageList = function() {
         getPageTitle: getPageTitle
     };
     
-    function init(selName, argSiteUrl) {
+    function init(selName, argSiteUrl, c) {
     	listSelector = $("#"+selName);
     	siteUrl = argSiteUrl; 
+
+		if(c == "null"){
+			charsetQuery = "";
+		}else{
+			charsetQuery = "and charset = '"+c+"'";
+		}
+    	
+		
     }
     
     function drawInitTable(){
@@ -77,7 +86,7 @@ var PageList = function() {
 
     function getPageTitle( p ) {
     	
-    	var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+(siteUrl+p)+"' and charset = 'EUC-KR' and xpath = '//title'") + '&format=json';
+    	var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+(siteUrl+p)+"' "+charsetQuery+" and xpath = '//title'") + '&format=json';
     	
     	$.ajax({
     		url: yql,
