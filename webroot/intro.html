@@ -33,8 +33,8 @@
                 <br><br>
 
                 <div class="desc-url">
-                    If you already set up this on your web page, <br> 
-                    Move to the Dashboard page. <br>
+                    <b>If you already set up this on your web page,</b> <br> 
+                    <b>Move to the Dashboard page.</b> <br>
                     <div class="input-append">
                       <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
                       <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
@@ -67,9 +67,10 @@
             <img src="img/arrow.png" />
         </div>
 
-        <script src="js/jquery-1.9.0.min.js"></script>
-        <script src="js/intro.js"></script>
-        <script src="js/prettify.min.js"></script>
+
+    <script src="js/jquery-1.9.0.min.js"></script>
+    <script src="js/intro.js"></script>
+    <script src="js/prettify.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script language="javascript">
 			$(function() {
@@ -77,10 +78,48 @@
 				window.prettyPrint && prettyPrint();
 				
 				$("#btnDashboard").on('click', function () {
-					$(location).attr('href', 'dashboard.html?site='+$("#urlDashboard").val());
+
+          var urlStr = $("#urlDashboard").val();
+
+          if(urlStr.length > 0){
+
+            var pattern = new RegExp('^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)'); 
+            if(!pattern.test(urlStr)) {
+              
+              var sel = $('#urlDashboard')
+              sel.popover({
+                trigger: 'manual',
+                placement: 'top',
+                content: 'Please enter a valid URL.'
+              })
+              sel.popover('show');
+
+              setTimeout(function() {$("#urlDashboard").popover('hide');;}, 1500);
+
+              sel.focus();
+
+              return false;
+            }
+
+  					$(location).attr('href', 'dashboard.html?site='+urlStr);
+          }
+
 				});
+
+        $("#urlDashboard").keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13'){
+            $("#btnDashboard").click();
+          }
+        });
+
+
+        
+
+
 				
 			});
 		</script>
+
     </body>
 </html>
