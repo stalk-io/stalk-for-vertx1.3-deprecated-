@@ -1,7 +1,7 @@
 
 html {
     min-height: 100%;
-    background: #C07B3A url('../img/bg.jpg') 100% 100% no-repeat;
+    background: #000000 url('../img/bg.jpg') 100% 100% no-repeat;
     /*background: url('../img/arrow.png') fixed no-repeat bottom right, #C07B3A url('../img/bg.jpg') 100% 100% no-repeat; */
     -webkit-background-size: cover;
     -o-background-size: cover;
@@ -11,7 +11,7 @@ html {
 body {
     min-height: 100%;
     font: 20px/1.4 'PT Sans', sans-serif;
-    color: rgba(199, 195, 195, 0.70);
+    color: #ffffff; /* rgba(218, 218, 218, 0.80);*/
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.66);
     background: transparent;
 }
@@ -24,6 +24,14 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .modal .modal-header {}
+
+.popover-content {
+    color: #FF0000;
+    background: ##FFFF00;
+    text-shadow: none;
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 /*
     Text elements
@@ -41,10 +49,13 @@ body {
 
 .description {
     margin-bottom: 40px;
+    color: #62c462;
 }
 
 .desc-url {
     margin-left: 20px;   
+    margin-bottom: 20px;
+    color: #2f96b4;
 }
 
 .arrow {
