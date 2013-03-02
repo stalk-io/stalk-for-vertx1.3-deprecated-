@@ -33,13 +33,32 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.carousel-control {
+	text-shadow: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.carousel-indicators {
+	right: 50px;
+}
+
+.arrow {
+	position:fixed; 
+	position:expression("absolute"); 
+	bottom:30px; 
+	right:150px; 
+	z-index: 9;	
+}
+
+
 /*
     Text elements
 =================================================================*/
 
 .heading {
-    margin-top: 100px;
-    margin-bottom: 30px;
+    margin-top: 80px;
+    margin-left: 40px;
+    margin-bottom: 20px;
     font-size: 64px;
     line-height: 64px;
     font-weight: bold;
@@ -47,25 +66,28 @@ body {
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
+.subtitle {
+    margin-left: 40px;
+}
+
 .description {
+	margin-left: 40px;
     margin-bottom: 40px;
     color: #62c462;
 }
 
 .desc-url {
-    margin-left: 20px;   
+	margin-left: 40px;
     margin-bottom: 20px;
     color: #2f96b4;
 }
 
 .arrow {
-    position: fixed;
-    position:expression("absolute");
-    width: 300px;
-    display:none;
-    font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
-    font-size:11px;
-    z-index:9999;
+    position:fixed; 
+    position:expression("absolute"); 
+    bottom:30px; 
+    right:150px; 
+    
 }
 
 
@@ -83,50 +105,65 @@ body {
 }
 
 @media (max-width: 767px) {
-    .site-heading {
-        margin-top: 25px;
-    }
 
-    input.subscribe-email {
-        width: 250px;
-    }
+	.carousel-control {
+		display: none;
+	}
+	
+	.heading {
+    	margin-top: 40px;
+    	margin-left: 10px;
+	}
+	
+	
+	.subtitle {
+	    margin-left: 10px;
+	}
+	
+	.description {
+		margin-left: 10px;
+	    margin-bottom: 20px;
+	}
+	
+	.desc-url {
+		margin-left: 10px;
+	    margin-bottom: 10px;
+	}
+		
+	.arrow {
+		display: none;
+	}
 }
 
 @media (max-width: 480px) {
-    .subscribe-form {
-        display: block;
-    }
-
-    input.subscribe-email,
-    .subscribe-submit {
-        width: 100%;
-    }
-
-    input.subscribe-email {
-        float: none;
-        -webkit-border-radius: 27px;
-        border-radius: 27px;
-    }
-
-    .subscribe-submit-container,
-    input.subscribe-email:focus + .subscribe-submit-container {
-        width: 100%;
-        padding: 0;
-        margin-top: 15px;
-        float: none;
-        position: static;
-        background: transparent;
-        border: 0;
-    }
-
-    input.subscribe-email:focus:invalid + .subscribe-submit-container {
-        padding: 0;
-        border: 0;
-    }
-
-    .countdown-item {
-        width: 50%;
-        margin-right: 0;
-        text-align: center;
-    }
+	
+	.carousel-control {
+		display: none;
+	}
+	
+	.heading {
+    	margin-top: 40px;
+    	margin-left: 10px;
+	}
+	
+	
+	.subtitle {
+	    margin-left: 10px;
+	}
+	
+	.description {
+		margin-left: 10px;
+	    margin-bottom: 20px;
+	}
+	
+	.desc-url {
+		margin-left: 10px;
+	    margin-bottom: 10px;
+	}
+		
+	.arrow {
+		display: none;
+	}
+		
+	
 }

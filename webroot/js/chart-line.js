@@ -64,6 +64,9 @@ var LineChart = function() {
 		    xaxis: {
 		        mode: "time"
 		    },
+		    yaxis: {
+	            min:0, minTickSize: 1 
+	        },
 		    grid: {
 		        borderWidth: 2,
 		        hoverable: true
@@ -80,7 +83,7 @@ var LineChart = function() {
     	
         if (linechartSel.length) {
         	
-        	if(cnt > 0){
+        	if(cnt >= 0){
         		if(linechartSel.css('display')=='none') linechartSel.show();
         		if(!isStarted) initChart(cnt);
         	}else{

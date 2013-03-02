@@ -1,6 +1,7 @@
 .stalk {
 	position: fixed;
 	position:expression("absolute");
+	text-shadow: none;
 	width: 300px;
 	display:none;
 	font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;

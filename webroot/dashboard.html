@@ -34,9 +34,8 @@
 			</div>
 			
 			<div class="row">
-				<div class="span12">
-					<h3 class="title"><i class="icon-signal"></i> &nbsp;&nbsp; CONNECTIONS</h3>
-					<div id="lineChart" class="lineChart"></div>
+				<div class="span12 lineChart" id="lineChart">
+					<!-- h3 class="title"><i class="icon-signal"></i> &nbsp;&nbsp; CONNECTIONS</h3 -->
 				</div>
 			</div>
 			<br>
@@ -58,128 +57,12 @@
 		
 		<script src="js/jquery.flot.js"></script>
 		<script src="js/jquery.flot.time.js"></script>
+		<script src="js/jquery.flot.resize.js"></script>
 		<script src="js/jquery.flot.tooltip.min.js"></script>
 		
 		<script src="js/chart-line.js"></script>
 		<script src="js/page-list.js"></script>
+		<script src="js/dashboard.js"></script>
 		
-		<script language="javascript">
-	    var dd = 0;
-	    
-		function getURLParameter(name) {
-			var u = decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]);
-			if(u){
-				//if(u.indexOf('://') >= 0){
-				//	return u.substr(u.indexOf('://')+3);
-				//}else{
-					return u
-				//}
-			}else{
-				return false;
-			}
-		}
-		function reloadPage(){
-			
-			var data = {
-					site: "http://news.chosun.com",
-					count: 3+dd,
-					data: [
-							"/,CH01^3",
-							"/site/data/html_dir/2013/02/25/2013022500078.html,CH01^"+(1+dd),
-							"/site/data/html_dir/2013/02/25/2013022500046.html,CH01^3",
-							"/test2.html,CH01^11",
-							"/test3.html,CH01^1",
-							"/test4.html,CH01^1",
-							"/test5.html,CH01^12",
-							"/test6.html,CH01^"+(1+dd),
-							"/test7.html,CH01^4",
-							"/test8.html,CH01^"+(1+dd),
-							"/test9.html,CH01^"+(1+dd),
-							"/test1.html,CH01^3",
-							"/test2.html,CH01^11",
-							"/test3.html,CH01^1",
-							"/test4.html,CH01^"+(1+dd),
-							"/test5.html,CH01^12",
-							"/test6.html,CH01^1",
-							"/test7.html,CH01^4",
-							"/test8.html,CH01^1",
-							"/test9.html,CH01^1",
-							"/test0.html,CH01^5",
-							"/test11.html,CH01^7",
-							"/test12.html,CH01^"+(1-dd),
-							"/test13.html,CH01^1",
-							"/test24.html,CH01^2"
-						],
-					status: "ok"
-					};
-			
-			LineChart.reload(data.count);
-			PageList.reload(data.count, data.data);
-			setTimeout("reloadPage()",1000*3);
-			dd = dd + 1
-		}
-		
-		function getUrlTitle(u, c){
-
-			if(c == "null"){
-				c = "";
-			}else{
-				c = "and charset = '"+c+"'";
-			}
-	    	
-			var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+u+"' "+c+" and xpath = '//title'") + '&format=json';
-	    	
-			
-	    	$.ajax({
-	    		url: yql,
-	    		data: {},
-	    		dataType: 'jsonp',
-	    		crossDomain: 'true',
-	    		beforeSend: function ( xhr ) {
-	    			$('#urlTitle').html(' . . . . ');
-	    		},
-	    		error: function(jqXHR, exception) {
-	    			var errorMessage = "";
-	                if (jqXHR.status === 0) {
-	                	errorMessage = 'Not connect.\n Verify Network.';
-	                } else if (jqXHR.status == 404) {
-	                	errorMessage = 'Requested page not found. [404]';
-	                } else if (jqXHR.status == 500) {
-	                	errorMessage = 'Internal Server Error [500].';
-	                } else if (exception === 'parsererror') {
-	                	errorMessage = 'Requested JSON parse failed.';
-	                } else if (exception === 'timeout') {
-	                	errorMessage = 'Time out error.';
-	                } else if (exception === 'abort') {
-	                	errorMessage = 'Ajax request aborted.';
-	                } else {
-	                	errorMessage = 'Uncaught Error.\n' + jqXHR.responseText;
-	                }
-	                errorMessage = errorMessage + ' Try again later.';
-	            },
-	    		success: function (data) {
-	    			if(parseInt(data.query.count, 10) > 0){
-	    				$('#pageTitle').html(
-	    						u+' <br><small class="text-info">'+data.query.results.title+' <a href="'+u+'" target="_black"><i class="icon-search"></i></a></small>');
-	    			}
-	    		}
-	    	});
-		}
-		
-		$(function() {
-
-			var s = getURLParameter("site");
-			var charset = getURLParameter("charset");
-			$('#pageTitle').html(s);
-			
-	       	window.prettyPrint && prettyPrint();
-	    	LineChart.init('lineChart');
-			PageList.init('pageList', 'http://news.chosun.com', charset );
-			
-			getUrlTitle(s, charset);
-			
-		    reloadPage();
-		})
-		</script>
     </body>
 </html>

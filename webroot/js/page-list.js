@@ -1,6 +1,6 @@
 var PageList = function() {
 	
-	var title = '<h3 class="title"><i class="icon-list"></i> &nbsp;&nbsp; PAGE LIST</h3>';
+	var title = ''; //'<h3 class="title"><i class="icon-list"></i> &nbsp;&nbsp; PAGE LIST</h3>';
 	var listSelector;
 	var isStarted = false;
 	var beforePageList = [];
@@ -32,7 +32,6 @@ var PageList = function() {
     
     function drawRow(tableTbody, datas){
     	var data  = datas.split(",");
-    	var cnt = data[1].split("^");
     	
     	if( $('#ST_'+jqSelector(data[0])).length > 0){ // existed!
     		
@@ -48,7 +47,7 @@ var PageList = function() {
     		
     	}else{
     		tableTbody.prepend(
-    			'<tr>'+
+    			'<tr id="R_'+data[0]+'">'+
     			'<td id="ST_'+data[0]+'" class="st"><i class="icon-minus"></i></td>'+
     			'<td>'+data[0]+'</td>'+
     			'<td id="BTN_'+data[0]+'"><button onclick="PageList.getPageTitle(\''+data[0]+'\');" class="btn btn-small btn-success" type="button">Get page title</button></td>'+
@@ -56,8 +55,12 @@ var PageList = function() {
     			'</tr>'
     		);
     	}
+    	
+    	return parseInt(data[1].split("^")[1], 10);
     }
     
+    
+    var beforeDatas = {};
     function reload(cnt, dataArr) {
     	
     	if(!isStarted){ // the 1st action
@@ -73,10 +76,29 @@ var PageList = function() {
     	
     	var tableTbody = $('#'+listSelector.attr("id")+' table tbody');
     	
+    	
+    	
+    	var datas = {};
+    	
+    	var totalCnt = 0;
     	for (var i = 0; i < cnt; i++) {
-			drawRow(tableTbody, dataArr[i]);
+
+    		var data = dataArr[i].split(",");
+    		datas[data[0]] = data[1].split("^")[1]; 
+    		
+    		totalCnt = totalCnt + drawRow(tableTbody, dataArr[i]);
     	}
     	
+    	for (var k in beforeDatas) {
+    	    if (!datas.hasOwnProperty(k)) {
+    	        //$('#CNT_'+jqSelector(k)).text('0');
+    	    	$('#R_'+jqSelector(k)).remove();
+    	    }
+    	}
+    	
+    	beforeDatas = datas;
+    	
+    	return totalCnt;
     }
     
     function jqSelector(str)

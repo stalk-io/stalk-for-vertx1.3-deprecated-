@@ -18,55 +18,128 @@
 	    <link href="css/bootstrap-responsive.min.css" 	rel="stylesheet">
         <link href="css/intro.css" 					    rel="stylesheet">
   		<link href="css/prettify.css"				    rel="stylesheet">
+  		<link href="css/animate-custom.css"		    	rel="stylesheet">
   		
     </head>
 
     <body>
+    
         <div class="container">
-            <h1 class="heading">Stalk.io</h1>
-            <h3>a social web chat service for your web pages.</h3>
+        
+        <h1 class="heading">Stalk.io</h1>
+		        
+		  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+		  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+  
+	        <div id="myCarousel" class="carousel slide">
+			  <ol class="carousel-indicators">
+			    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			    <li data-target="#myCarousel" data-slide-to="1"></li>
+			    <li data-target="#myCarousel" data-slide-to="2"></li>
+			  </ol>
+			  <!-- Carousel items -->
+			  <div class="carousel-inner">
+			    <div class="active item" >
+			            
+			            <h3 class="subtitle animated bounceInDown">a social web chat service for your web pages.</h3>
+			
+			            <p class="description animated fadeInUpBig">
+			            	<b>Just insert some tags in your HTML pages.</b><br>
+			            	<b>It only takes a minute.</b><br>
+			            	<br>
+			                <a href="#installModal" role="button" class="btn btn-large btn-success" data-toggle="modal">How to install this on your web pages ? click this !!</a>
+			                <br><br>
+			
+			                <div class="desc-url animated fadeInRightBig">
+			                    <b>If you already set up this on your web page,</b> <br> 
+			                    <b>Move to the Dashboard page.</b> <br><br>
+			                    <div class="input-append">
+			                      <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
+			                      <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
+			                    </div>
+			                </div>
+			            <p>
+			            
+			    </div>
+			    <div class="item">
+			            
+			            <h3 class="subtitle animated bounceInUp">with Social Network Service</h3>
+						<p class="description animated fadeInUpBig">
+			            	<b>Just sign in Facebook, Twitter or Google+, </b><br>
+			            	<b>visiters can chat with each others on your web pages</b><br>
+			            </p>
+						
+						<h3 class="subtitle animated bounceInUp">for Every Web Browsers</h3>
+						
+			            <p class="description animated fadeInUpBig">
+			            	<b>This service fit with cross-browsers. IE 6+, chrome, safari and all mobile browsers</b><br>
+			            </p>
+			            
+			            <p class="description animated fadeInUpBig">
+			                <a href="#installModal" role="button" class="btn btn-large btn-success" data-toggle="modal">How to install?</a>
+			                <br>
+			                <div class="desc-url animated fadeInRightBig">
+			                	Move to the Dashboard page. <br>
+				                <div class="input-append">
+			                      <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
+			                      <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
+			                    </div>
+			                </div>
+			            <p>
+			            
+			    </div>
+			    <div class="item">
+			            
+			            
+			            <h3 class="subtitle">a social web chat service for your web pages.</h3>
+			
+			            <p class="description">
+			            	<b>Just insert some tags in your HTML pages.</b><br>
+			            	<b>It only takes a minute.</b><br>
+			            	<br>
+			                <a href="#installModal" role="button" class="btn btn-large btn-success" data-toggle="modal">How to install this on your web pages ? click this !!</a>
+			                <br><br>
+			
+			                <div class="desc-url">
+			                    <b>If you already set up this on your web page,</b> <br> 
+			                    <b>Move to the Dashboard page.</b> <br>
+			                    <div class="input-append">
+			                      <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
+			                      <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
+			                    </div>
+			                </div>
+			            <p></div>
+			  </div>
+			</div>
 
-            <p class="description">
-            	<b>Just insert some tags in your HTML pages.</b><br>
-            	<b>It only takes a minute.</b><br>
-                <p><a href="#installModal" role="button" class="btn btn-large btn-success" data-toggle="modal">How to install this on your web pages ? click this !!</a></p>
-                <br><br>
+        </div>
+        
+        
+        
+        
 
-                <div class="desc-url">
-                    <b>If you already set up this on your web page,</b> <br> 
-                    <b>Move to the Dashboard page.</b> <br>
-                    <div class="input-append">
-                      <input id="urlDashboard" class="span5" type="text" placeholder=" Type your site URL">
-                      <button id="btnDashboard" class="btn btn-info" type="button">Go !! </button>
-                    </div>
-                </div>
- 
-                <!-- Modal -->
-                <div id="installModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="installModalLabel" aria-hidden="true">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="installModalLabel">How to install ? </h3>
-                  </div>
-                  <div class="modal-body">
-                    <p>Put the tags and the javascript codes before the last <code>&lt;/body&gt;</code> tag in your HTML page</p>
+        <div class="arrow">
+            <img src="img/arrow.png" />
+        </div>
+        
+ <!-- Modal -->
+        <div id="installModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="installModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="installModalLabel">How to install ? </h3>
+          </div>
+          <div class="modal-body">
+            <p>Put the tags and the javascript codes before the last <code>&lt;/body&gt;</code> tag in your HTML page</p>
 <pre class="prettyprint linenums">&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.stalk.io/stalk.js&quot; charset=&quot;utf-8&quot; &gt;&lt;/script&gt;
 &lt;script language=&quot;javascript&quot;&gt;
    STALK.init();
 &lt;/script&gt;</pre>
-                    <p>That's it! :)</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                  </div>
-                </div>
-            <p>
-            
-        </div>
-
-        <div style='position:fixed; position:expression("absolute"); bottom:30px; right:150px; z-index: 9;'>
-            <img src="img/arrow.png" />
-        </div>
-
+             <p>That's it! :)</p>
+           </div>
+           <div class="modal-footer">
+             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+           </div>
+         </div>
 
     <script src="js/jquery-1.9.0.min.js"></script>
     <script src="js/intro.js"></script>
@@ -77,49 +150,51 @@
 				
 				window.prettyPrint && prettyPrint();
 				
-				$("#btnDashboard").on('click', function () {
+				
+				$("body").on('click', '#btnDashboard', function () {
 
-          var urlStr = $("#urlDashboard").val();
-
-          if(urlStr.length > 0){
-
-            var pattern = new RegExp('^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)'); 
-            if(!pattern.test(urlStr)) {
-              
-              var sel = $('#urlDashboard')
-              sel.popover({
-                trigger: 'manual',
-                placement: 'top',
-                content: 'Please enter a valid URL.'
-              })
-              sel.popover('show');
-
-              setTimeout(function() {$("#urlDashboard").popover('hide');;}, 1500);
-
-              sel.focus();
-
-              return false;
-            }
-
-  					$(location).attr('href', 'dashboard.html?site='+urlStr);
-          }
-
+		          var urlStr = $("#urlDashboard").val();
+		
+		          if(urlStr.length > 0){
+		
+		            var pattern = new RegExp('^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)'); 
+		            if(!pattern.test(urlStr)) {
+		              
+		              var sel = $('#urlDashboard')
+		              sel.popover({
+		                trigger: 'manual',
+		                placement: 'top',
+		                content: 'Please enter a valid URL.'
+		              })
+		              sel.popover('show');
+		
+		              setTimeout(function() {$("#urlDashboard").popover('hide');;}, 1500);
+		
+		              sel.focus();
+		
+		              return false;
+		            }
+		
+		  			$(location).attr('href', 'dashboard.html?site='+urlStr);
+		          }
+		
 				});
-
-        $("#urlDashboard").keypress(function(event){
-          var keycode = (event.keyCode ? event.keyCode : event.which);
-          if(keycode == '13'){
-            $("#btnDashboard").click();
-          }
-        });
-
-
-        
-
+		
+		        $("#urlDashboard").keypress(function(event){
+		          var keycode = (event.keyCode ? event.keyCode : event.which);
+		          if(keycode == '13'){
+		            $("#btnDashboard").click();
+		          }
+		        });
 
 				
 			});
 		</script>
+
+<!-- SODABOX start -->
+<script type="text/javascript" src="http://www.stalk.io/stalk.js" charset="utf-8"></script><script language="javascript">STALK.init();</script>
+<!-- SODABOX end -->
+
 
     </body>
 </html>

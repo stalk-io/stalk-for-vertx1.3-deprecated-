@@ -49,12 +49,6 @@ public class WebServer extends AbstractModule{
 	@Override
 	public void handle(final HttpServerRequest req) {
 
-		req.bodyHandler(new Handler<Buffer>(){
-			public void handle(Buffer arg0) {
-				System.out.println("----------------------"+ arg0);
-			};
-		});
-
 		if(req.path.startsWith("/user")){
 			
 			if(req.path.startsWith("/user/new")){
@@ -332,7 +326,13 @@ public class WebServer extends AbstractModule{
 
 		}
 		else{
-			localResponse(req);
+			
+			if("/intro".equals(req.path) || "/dashboard".equals(req.path)){
+				req.response.sendFile(webRoot + req.path + ".html");
+			}else{
+				localResponse(req);
+			}
+			
 		}
 
 	}
