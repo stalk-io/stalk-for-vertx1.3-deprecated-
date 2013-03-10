@@ -62,7 +62,7 @@ body {
     font-size: 64px;
     line-height: 64px;
     font-weight: bold;
-    color: #62c462;
+    color: #bfd430;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -71,9 +71,9 @@ body {
 }
 
 .description {
-	margin-left: 40px;
+	margin-left: 50px;
     margin-bottom: 40px;
-    color: #62c462;
+    text-shadow: none;
 }
 
 .desc-url {
@@ -88,6 +88,14 @@ body {
     bottom:30px; 
     right:150px; 
     
+}
+
+.text-LG {
+    color: #62c462;
+}
+
+.text-AB {
+    color: #00afb5;
 }
 
 

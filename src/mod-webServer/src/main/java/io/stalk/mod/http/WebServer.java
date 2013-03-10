@@ -284,7 +284,14 @@ public class WebServer extends AbstractModule{
 
 			}
 
-		}else if("/preview".equals(req.path)){
+		}else if(
+				"/preview".equals(req.path) ||
+				"/preview1".equals(req.path) ||
+				"/preview2".equals(req.path) ||
+				"/preview3".equals(req.path) ||
+				"/preview4".equals(req.path) 
+				
+				){
 
 			String addHtml = 
 					"<script type=\"text/javascript\" src=\"http://www.stalk.io/stalk.js\" charset=\"utf-8\"></script><script language=\"javascript\">STALK.init();</script>";

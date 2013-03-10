@@ -65,6 +65,7 @@ function getUrlTitle(u, c){
 		c = "and charset = '"+c+"'";
 	}
 	
+	c= "http://blog.lgcns.com";
 	var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent("select content from html where url = '"+u+"' "+c+" and xpath = '//title'") + '&format=json';
 	
 	$.ajax({
