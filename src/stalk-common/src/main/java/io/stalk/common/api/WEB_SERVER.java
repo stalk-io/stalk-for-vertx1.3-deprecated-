@@ -15,6 +15,7 @@ public interface WEB_SERVER {
 	String GZIP_FILES		= "gzip-files";
 	String WEB_ROOT			= "webRoot"; 
 	String INDEX_PAGE		= "indexPage";
+	String TYPE 			= "type";
 			
 
 	/* Default values */
@@ -25,6 +26,7 @@ public interface WEB_SERVER {
 		boolean GZIP_FILES		= false;
 		String WEB_ROOT			= "webroot";
 		String INDEX_PAGE		= "index.html";
+		String TYPE 			= "CHAT"; 
 	}
 	
 	/* Actions */

@@ -1,0 +1,83 @@
+{ 
+	
+
+	"NODE-WATCHER": {
+	
+		"module" : "io.stalk.mod-nodeWatcher-v1.2",
+		"instances" : 1,
+		"config" : {
+			"zookeeper-servers": [
+				{"host" : "localhost", "port" : "2181"}
+			]
+		}
+	},
+
+	"PUBLISH-MANAGER": {
+	
+		"module" : "io.stalk.mod-publishManager-v1.2",
+		"instances" : 2,
+		"config" : {
+		}
+	},
+
+	"SESSION-MANAGER": {
+	
+		"module" : "io.stalk.mod-sessionManager-v1.2",
+		"instances" : 3,
+		"config" : {
+			"session-storage": {
+				"host": "127.0.0.1",
+				"port": 8888
+			}
+		}
+	},
+	
+	"WEB-SERVER": {
+		
+		"module" : "io.stalk.mod-webServer-v1.2",
+		
+		"instances" : 5,
+		
+		"config": {
+		
+			"type": "video",
+			"host": "0.0.0.0",
+			"port": 80,
+			"webRootPrefix": "webroot",
+		
+			"oauth": {
+	    	
+		    	"proxy.host": "",
+		    	"proxy.port": "",
+		    	"http.connectionTimeOut": "5000",
+		    	
+		    	"api.login.yahoo.com" : {
+	                "consumer_key": "dj0yJmk9dDBvTnZBZkxNOXQyJmQ9WVdrOU1rMURTMll4TlRBbWNHbzlNVEV4TVRnNU9URTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0yMA--",
+	                "consumer_secret": "01f6c1665bc03a80d776bc6dfc2e6916820a6f39",
+	                "callback_url": "http://www.stalk.io"
+		    	},
+		    	"www.googleapis.com" : {
+	                "consumer_key": "1019661710090.apps.googleusercontent.com",
+	                "consumer_secret": "93QDUBuI-xzFxkH6K7daeFFi",
+	                "callback_url": "http://www.stalk.io/auth/callback"
+        		},
+		    	"www.google.com" : {
+		    		"consumer_key": "www.stalk.io",
+		    		"consumer_secret": "Zhb9ImjpiNjIqf4iTuXQTIEt",
+		    		"callback_url": "http://www.stalk.io/auth/callback"
+		    	},
+		    	"twitter.com" : {
+		    		"consumer_key": "vfGrasEkdP1nDiOgCfUdiQ",
+		    		"consumer_secret": "JT2NgHk6ppLrMuOaLnEfsb4JuS1p2UVfzdKIfpVplo",
+		    		"callback_url": "http://www.stalk.io/auth/callback"
+		    	},
+		    	"graph.facebook.com" : {
+		    		"consumer_key": "495434500502378",
+		    		"consumer_secret": "b954990617a2a385460ca0c440d0eb9e",
+		    		"callback_url": "http://www.stalk.io/auth/callback"
+		    	}
+		    }
+		}
+	}
+	
+}

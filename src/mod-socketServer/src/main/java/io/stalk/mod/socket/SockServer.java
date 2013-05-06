@@ -135,8 +135,12 @@ public class SockServer extends AbstractModule {
 					removeSocketId(session.REFER, socketId);
 					removeSessionInfo(socketId);
 
+				}else if( "SIGNAL".equals(reqJson.getString("action")) ){
+					sendMessageToAll(reqJson.getString("refer"), reqJson.encode());
+					
 				}else{
 					sock.writeBuffer(data);
+					
 				}
 
 			}

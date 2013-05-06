@@ -86,7 +86,7 @@ public class ZooKeeperClient {
 						switch (event.getState()) {
 						case Expired:
 							LOG.info("[ZooKeeperClient] Zookeeper session expired. Event: " + event);
-							close();
+							//close();
 							break;
 						case SyncConnected:
 							LOG.info("[ZooKeeperClient] Event: " + event);

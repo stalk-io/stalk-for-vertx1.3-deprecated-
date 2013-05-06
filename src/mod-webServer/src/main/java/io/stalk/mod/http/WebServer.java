@@ -1,20 +1,11 @@
 package io.stalk.mod.http;
 
-import io.stalk.common.api.MONGO_MANAGER;
 import io.stalk.common.api.PUBLISH_MANAGER;
 import io.stalk.common.api.SESSION_MANAGER;
 import io.stalk.mod.http.oauth.Profile;
 import io.stalk.mod.http.oauth.strategy.RequestToken;
 import io.stalk.mod.http.oauth.utils.AccessGrant;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +16,6 @@ import org.jboss.netty.handler.codec.http.CookieEncoder;
 import org.jboss.netty.handler.codec.http.DefaultCookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.json.JsonObject;
@@ -49,85 +39,24 @@ public class WebServer extends AbstractModule{
 	@Override
 	public void handle(final HttpServerRequest req) {
 
+		String reqHost = req.headers().get("host");
+		//if(reqHost != null && reqHost.length() > 0 && !reqHost.equals(host)){
+
+		//	return;
+		//}
+		
+
+		DEBUG("111 req : %s ", reqHost);
+		DEBUG("222 req : %s ", req.path);
+
+		for (Map.Entry<String, String> entry : req.headers().entrySet()) {
+			System.out.println("Key : " + entry.getKey() + " Value : "
+					+ entry.getValue());
+		}
+		
+		
+
 		if(req.path.startsWith("/user")){
-			
-			if(req.path.startsWith("/user/new")){
-				
-				JsonObject reqJson = new JsonObject();
-				reqJson.putString("action"		, MONGO_MANAGER.ACTION.NEW);
-				reqJson.putString("email"		, req.params().get("email"));
-				reqJson.putString("password"	, req.params().get("password"));
-				
-				eb.send(MONGO_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
-					public void handle(Message<JsonObject> message) {
-
-						if("ok".equals(message.body.getString("status"))){
-							req.response.sendFile(webRoot+"/user/new.html?key="+message.body.getString("key"));	
-						}else{
-							req.response.sendFile(webRoot+"/user/error.html?m="+message.body.getString("message"));
-						}
-					}
-					
-				});
-				
-			}else if(req.path.startsWith("/user/auth/")){
-				
-				String str = req.path.substring(12);
-				
-				int i = str.indexOf("/");
-				String id = str.substring(0, i);
-				String auth = str.substring(i);
-				
-				JsonObject reqJson = new JsonObject();
-				reqJson.putString("action"	, MONGO_MANAGER.ACTION.AUTH);
-				reqJson.putString("id"		, id);
-				reqJson.putString("auth"	, auth);
-				
-				eb.send(MONGO_MANAGER.DEFAULT.ADDRESS, reqJson, new Handler<Message<JsonObject>>() {
-					public void handle(Message<JsonObject> message) {
-
-						String status = message.body.getString("status");
-						if("error".equals(status)){
-							req.response.sendFile(webRoot+"/user/error.html?m="+message.body.getString("message"));
-						}else{
-							req.response.sendFile(webRoot+"/user/auth.html?key="+message.body.getString("key"));
-						}
-					}
-				});
-			}else if(req.path.startsWith("/user/info/")){
-				
-				
-			}
-			
-			
-			
-		}else if(req.path.startsWith("/chat/")){
-
-			if(chatpopHtml == null || log.isDebugEnabled()){
-				Path file = Paths.get(webRoot + "/chatpop.html");
-				StringBuilder content;
-				try {
-					BufferedReader reader = Files.newBufferedReader(file, Charset.forName("UTF-8"));
-					content = new StringBuilder();
-					String line = null;
-					while ((line = reader.readLine()) != null) {
-						content.append(line);
-					}
-					chatpopHtml = content.toString();
-				} catch (Exception e) {
-					e.printStackTrace();
-					chatpopHtml = e.getMessage();
-				}
-			}
-
-			req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
-
-			req.response.end(
-					StringUtils.replaceOnce(chatpopHtml, "<#CONF#>", new JsonObject()
-					.putString("refer", req.path.substring(6))
-					.encode())
-					);
-
 
 		}else if("/node".equals(req.path)){
 
@@ -195,8 +124,6 @@ public class WebServer extends AbstractModule{
 				req.response.end("<html><body><h1>^^</h1><br>"+e.getMessage()+"</body></html>");
 			}
 
-
-
 		}else if("/auth/callback".equals(req.path)){
 
 			String value = req.headers().get(HttpHeaders.Names.COOKIE);
@@ -252,22 +179,36 @@ public class WebServer extends AbstractModule{
 					profileJson.putString("link"	, user.getLink());
 					profileJson.putString("target"	, target);
 
-					JsonObject jsonMessage = new JsonObject();
-					jsonMessage.putString("action"		, PUBLISH_MANAGER.ACTION.PUB);
-					jsonMessage.putString("type"		, "LOGIN");
-					jsonMessage.putString("channel"		, channel);
-					jsonMessage.putString("socketId"	, socketId);
-					jsonMessage.putString("refer"		, refer);
-					jsonMessage.putObject("user"		, profileJson);
+					if(type.equals("video")){
 
-					eb.send(PUBLISH_MANAGER.DEFAULT.ADDRESS, jsonMessage);
+						JsonObject jsonMessage = new JsonObject();
+						jsonMessage.putString("action"		, PUBLISH_MANAGER.ACTION.PUB);
+						jsonMessage.putString("type"		, "LOGIN");
+						jsonMessage.putString("channel"		, channel);
+						jsonMessage.putString("socketId"	, socketId);
+						jsonMessage.putString("refer"		, refer);
+						jsonMessage.putObject("user"		, profileJson);
 
+						eb.send(PUBLISH_MANAGER.DEFAULT.ADDRESS, jsonMessage);
 
-					// Delete Cookies
-					req.response.headers().put(HttpHeaders.Names.SET_COOKIE, getDeletedCookie());
+						// Delete Cookies
+						req.response.headers().put(HttpHeaders.Names.SET_COOKIE, getDeletedCookie());
+						req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE, "text/html; charset=UTF-8");
+						req.response.end("<script type='text/javascript'>window.close();</script>");
+						
+					}else{
+						
+						JsonObject cookieJsonObject = new JsonObject();
+						cookieJsonObject.putString("user"		, profileJson.encode());
+						
+						CookieEncoder httpCookieEncoder = new CookieEncoder(true);	
+						httpCookieEncoder.addCookie(OAUTH_COOKIE.NAME				, cookieJsonObject.encode());
+						
+						req.response.headers().put(HttpHeaders.Names.SET_COOKIE		, httpCookieEncoder.encode());
+						req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html; charset=UTF-8");
+						req.response.end("<script type='text/javascript'>location.href='/live#"+refer+"';</script>");
 
-					req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE, "text/html; charset=UTF-8");
-					req.response.end("<script type='text/javascript'>window.close();</script>");
+					}
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -284,62 +225,18 @@ public class WebServer extends AbstractModule{
 
 			}
 
-		}else if(
-				"/preview".equals(req.path) ||
-				"/preview1".equals(req.path) ||
-				"/preview2".equals(req.path) ||
-				"/preview3".equals(req.path) ||
-				"/preview4".equals(req.path) 
-				
-				){
+		}else if("/live".equals(req.path)){
 
-			String addHtml = 
-					"<script type=\"text/javascript\" src=\"http://www.stalk.io/stalk.js\" charset=\"utf-8\"></script><script language=\"javascript\">STALK.init();</script>";
-			StringBuffer html = new StringBuffer();
-
-			String result = "";
-			if(!StringUtils.isEmpty(req.params().get("url"))){
-				try {
-
-					URL uu = new URL(req.params().get("url"));
-					BufferedReader in = new BufferedReader(
-							new InputStreamReader(uu.openStream(), "UTF-8"));
-
-					String inputLine;
-					while ((inputLine = in.readLine()) != null)
-						html.append(inputLine);
-					in.close();
-
-
-					String baseHref = "<base href=\""+req.params().get("url")+"\">";
-
-					result = 
-							html.substring(0, html.indexOf("</head>")) +
-							baseHref +
-							html.substring(html.indexOf("</head>"), html.indexOf("</body>")) +
-							addHtml +
-							html.substring(html.indexOf("</body>"));
-
-				} catch (IOException e) {
-					e.printStackTrace();
-					result = e.getMessage();
-				}
-			}else{
-				result = "url is not valid";
-			}
-
-			req.response.headers().put(HttpHeaders.Names.CONTENT_TYPE	, "text/html");
-			req.response.end(result);
-
-		}
-		else{
+			req.response.sendFile(webRoot + req.path + ".html");
 			
+		}else{
+
 			if("/intro".equals(req.path) || "/dashboard".equals(req.path)){
 				req.response.sendFile(webRoot + req.path + ".html");
 			}else{
 				localResponse(req);
 			}
-			
+
 		}
 
 	}

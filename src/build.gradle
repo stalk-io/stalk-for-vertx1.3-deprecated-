@@ -48,7 +48,7 @@ project(':stalk-common'){
 		group = 'stalk'
 		description = "... ^^; "
 
-		into "../../bin/vertx/lib"
+		into "../../bin/vertx/lib/"
 		from configurations.compile
 		from 'build/libs'
 	}

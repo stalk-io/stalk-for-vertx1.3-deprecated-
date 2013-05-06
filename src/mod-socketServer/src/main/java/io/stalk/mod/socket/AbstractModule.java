@@ -64,7 +64,7 @@ public abstract class AbstractModule extends BusModBase implements Handler<SockJ
 
 		SockJSServer sockServer = vertx.createSockJSServer(server);
 		sockServer.installApp(new JsonObject().putString("prefix", "/message"), this);
-		server.listen(port, host);
+		server.listen(port); //, host);
 
 		// create server node!!
 		JsonObject createNodeAction = new JsonObject();

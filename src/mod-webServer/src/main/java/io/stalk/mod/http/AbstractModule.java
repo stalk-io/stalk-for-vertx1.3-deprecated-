@@ -24,6 +24,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 	
 	protected String 	webRoot;
 	protected SocialAuthManager authManager;
+	
+	protected String host;
+	protected String type;
 
 	@Override
 	public void start() {
@@ -36,8 +39,9 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 		gzipFiles 		= getOptionalBooleanConfig	(WEB_SERVER.GZIP_FILES, WEB_SERVER.DEFAULT.GZIP_FILES);
 		webRoot 		= getOptionalStringConfig	(WEB_SERVER.WEB_ROOT, 	WEB_SERVER.DEFAULT.WEB_ROOT);
 		String index	= getOptionalStringConfig	(WEB_SERVER.INDEX_PAGE, WEB_SERVER.DEFAULT.INDEX_PAGE);
-		String host		= getOptionalStringConfig	(WEB_SERVER.HOST, 		WEB_SERVER.DEFAULT.HOST);
+		host			= getOptionalStringConfig	(WEB_SERVER.HOST, 		WEB_SERVER.DEFAULT.HOST);
 		int	   port		= getOptionalIntConfig		(WEB_SERVER.PORT,		WEB_SERVER.DEFAULT.PORT);
+		type			= getOptionalStringConfig	(WEB_SERVER.TYPE, 		WEB_SERVER.DEFAULT.TYPE);
 
 		indexPage = webRoot + File.separator + index;
 
@@ -58,7 +62,7 @@ public abstract class AbstractModule extends BusModBase implements Handler<HttpS
 
 		HttpServer server = vertx.createHttpServer();
 		server.requestHandler(this);
-		server.listen(port, host);
+		server.listen(port);
 
 		// starting watching nodes !!!!
 		eb.send(NODE_WATCHER.DEFAULT.ADDRESS, new JsonObject().putString("action", NODE_WATCHER.ACTION.START_WATCHING));

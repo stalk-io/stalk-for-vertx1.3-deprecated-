@@ -1,0 +1,4 @@
+{
+  "main": "io.stalk.mod.http.VideoWebServer",
+  "preserve-cwd": true
+}
