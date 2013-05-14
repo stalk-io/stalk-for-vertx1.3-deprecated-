@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  padding-bottom: 0;
+	padding-bottom: 0;
 	background-color: #e4e6e9;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 13px;
@@ -641,10 +641,16 @@ form .form-actions {
 	width: 75%!important
 }
 
+.about {
+	color: #393939;
+}
+
 .stalk_snsbtn {
-	width: 40px;
+	width: 30px;
 	cursor: pointer;
 }
-.login {
-	text-align: center;
-}
+
+
+color: #FFF;
+background: #438eb9;
+
