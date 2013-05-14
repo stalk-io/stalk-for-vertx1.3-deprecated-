@@ -28,40 +28,147 @@
   <div class="navbar navbar-inverse">
     <div class="navbar-inner">
       <div class="container-fluid">
-        <a class="brand" href="#">Social Live Broadcast</a>
-        <!-- div class="nav-collapse collapse">
-          <ul class="nav">
-            <li class="active"><a href="#">About</a></li>
-            <li><a href="#install">Install</a></li>
-            <li><a href="#contact">Contact</a></li>
+        <a class="brand" href="#"> <small>Social Live Broadcasting</small>  </a>
+
+        <ul class="nav pull-right">
+
+        <li><a href="#">About</a></li>
+        <li>|</li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Social Login <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"><img src="http://www.stalk.io/img/facebook.png" class="stalk_snsbtn"> &nbsp; facebook</a></li>
+            <li><a href="#"><img src="http://www.stalk.io/img/twitter.png" class="stalk_snsbtn"> &nbsp; twitter</a></li>
+            <li><a href="#"><img src="http://www.stalk.io/img/google.png" class="stalk_snsbtn"> &nbsp; google +</a></li>
           </ul>
-        </div --><!--/.nav-collapse -->
+        </li>
+        <li>|</li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Services <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">(chat.stalk.io) <b>Live web chat </b></a></li>
+            <li><a href="#">(live.stalk.io) <b>Live web video</b></a></li>
+            <li class="divider"></li>
+            <li><a href="#"><small>About author</small></a></li>
+          </ul>
+        </li>
+      </ul>
+
       </div>
     </div>
   </div>
 
   <div class="container-fluid" id="main-container">
 
+
+    <div class="alert alert-block alert-error about fade in">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <br>
+            <h4 class="about">Show your Real Live to your friends via</h4>
+            <h1>&nbsp;&nbsp;<strong>free Web Broadcasting Service</strong></h1>
+            <br>
+            <p>This Web Site lets you create <b>your live broadcast</b> from your PC web browser with Webcam or built-in PC Camera. </p>
+            <p>You can do free real-time video streaming over the internet <b>with no Active-X and no plugins</b>. just by login with Social Login </p>
+            <br>
+
+    </div>
     <div id="page-content" class="clearfix">
-      
+
+
       <div class="page-header">
-      		<div class="login">
-        	<h3> [ &nbsp; Sign In with &nbsp;&nbsp;
-        	<img src="http://www.stalk.io/img/facebook.png" class="stalk_snsbtn">&nbsp;&nbsp;
-        	<img src="http://www.stalk.io/img/twitter.png" class="stalk_snsbtn">&nbsp;&nbsp;
-        	<img src="http://www.stalk.io/img/google.png" class="stalk_snsbtn"> &nbsp; ]
-        	 </h3>
-        	 </div>
-      </div><!--/page-header-->
+          
+          <div class="logined">
+
+            <!-- h4> 
+              &nbsp; Sign In with &nbsp;&nbsp;
+              <img src="http://www.stalk.io/img/facebook.png" class="stalk_snsbtn">&nbsp;&nbsp;
+              <img src="http://www.stalk.io/img/twitter.png" class="stalk_snsbtn">&nbsp;&nbsp;
+              <img src="http://www.stalk.io/img/google.png" class="stalk_snsbtn"> &nbsp;
+            </h4 -->
+      
+
+            <h5>
+              John Kim  &nbsp;
+              <small>(facebook)</small> &nbsp;
+              <button class="btn btn-mini" type="button">logout</button> &nbsp; 
+              <a href="#newBroadcast" role="button" class="btn btn-mini btn btn-info" data-toggle="modal">Create New Broadcasting !</a>
+            </h5>
+          </div>
+
+          <div id="newBroadcast" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="newBroadcastLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="newBroadcastLabel">Create Your Broadcasting Room</h3>
+            </div>
+            <div class="modal-body">
+              <p>
+                <form class="form-horizontal">
+                  <div class="control-group">
+                    <label class="control-label" for="roomName"><STRONG>Name</STRONG></label>
+                    <div class="controls">
+                      <input type="text" id="roomName" placeholder="Your Room Name">
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label" for="roomDesc"><STRONG>Description</STRONG></label>
+                    <div class="controls">
+                      <input type="text" id="roomDesc" placeholder="(Optional)">
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label" for="roomPassword"><STRONG>Private</STRONG></label>
+                    <div class="controls">
+                      <label class="checkbox">
+                        <input type="checkbox"> Enter a password to join
+                      </label>
+                      <input type="password" id="roomPassword" placeholder="Password">
+                    </div>
+                  </div>
+                </form>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">Close</button>
+              <button class="btn btn-small btn-info">Create</button>
+            </div>
+          </div>
+
+      </div>
 
       <div class="row-fluid">
-        <div class="span6">
-          
+        
+        <div class="span12">
+          <h3>- On Air <small>Click the broadcasting title to join :)</small></h3>
+          <table class="table table-hover">
+            <thead>
+              <tr class="text-center">
+                <th >title</th>
+                <th class="text-center">broadcaster</th>
+                <th class="text-center">audiances</th>
+                <th class="text-center">since</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="title">안녕하세요.. 반갑습니다... 여기는 개인 방송입니다.</td>
+                <td>John Kim</td>
+                <td>2</td>
+                <td>09:04</td>
+              </tr>
+              <tr>
+                <td>use the plugin without the accordion markup <span class="label label-important">private</span></td>
+                <td>John Kim</td>
+                <td>2</td>
+                <td>09:04</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="span6">
 
-        </div>
       </div>
+
     </div>
   </div>
 
