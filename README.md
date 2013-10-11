@@ -3,6 +3,8 @@ STALK.IO
 
 this is social live chat platform
 
+move to https://github.com/stalk-io/stalk-server
+
 ```
         _             _   _          _         
        | |           | | | |        (_)        
